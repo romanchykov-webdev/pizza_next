@@ -7,6 +7,7 @@ import { Input } from '@/components/ui';
 import { RangeSlider } from '@/components/shared/range-slider';
 import { CheckboxFiltersGroup } from '@/components/shared/checkbox-filters-group';
 import { useFilters, useIngredients, useQueryFilters } from '@/hooks';
+import { SlidersHorizontal, Trash2 } from 'lucide-react';
 
 interface IFiltersProps {
   className?: string;
@@ -25,10 +26,17 @@ export const Filters: React.FC<IFiltersProps> = ({ className }): JSX.Element => 
     filters.setPrices('priceFrom', prices[0]);
     filters.setPrices('priceTo', prices[1]);
   };
-
   return (
     <div className={cn('', className)}>
-      <Title text="Фильтрация" size="sm" className="mb-5 font-bold" />
+      <div className="flex items-center justify-between  mb-5">
+        <Title text="Фильтрация" size="sm" className=" font-bold" />
+
+        {filters.hasFilters && (
+          <div className="cursor-pointer" onClick={filters.resetFilters}>
+            <Trash2 className="text-red-500 w-5 h-5" />
+          </div>
+        )}
+      </div>
       <div className="flex flex-col gap-4">
         {/*selected impasto*/}
         <CheckboxFiltersGroup
