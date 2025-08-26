@@ -33,7 +33,7 @@ export const Filters: React.FC<IFiltersProps> = ({ className }): JSX.Element => 
 
         {filters.hasFilters && (
           <div className="relative cursor-pointer" onClick={filters.resetFilters}>
-            <Trash2 className="text-red-500" />
+            <Trash2 className="text-red-500 w-5 h-5" />
           </div>
         )}
       </div>
