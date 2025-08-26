@@ -1,11 +1,5 @@
-import {
-  Container,
-  Filters,
-  ProductCard,
-  ProductsGroupList,
-  Title,
-  TopBar,
-} from '@/components/shared';
+import { Container, Filters, ProductsGroupList, Title, TopBar } from '@/components/shared';
+import { Suspense } from 'react';
 
 export default function Home() {
   return (
@@ -19,9 +13,9 @@ export default function Home() {
         <div className="flex gap-[80px]">
           {/* Фильтрация */}
           <div className="w-[250px]">
-            {/*<Suspense>*/}
-            <Filters />
-            {/*</Suspense>*/}
+            <Suspense fallback={<div>Загрузка фильтров...</div>}>
+              <Filters />
+            </Suspense>
           </div>
 
           {/* Список товаров */}
