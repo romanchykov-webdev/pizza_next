@@ -56,6 +56,7 @@ async function up() {
     data: products,
   });
 
+  // Пицца
   const pizza1 = await prisma.product.create({
     data: {
       name: 'Пепперони фреш',
@@ -92,6 +93,90 @@ async function up() {
     },
   });
 
+  const pizza4 = await prisma.product.create({
+    data: {
+      name: 'Маргарита',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198bf3d788b78d491891a6da5e94bf1.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(15, 20),
+      },
+    },
+  });
+
+  const pizza5 = await prisma.product.create({
+    data: {
+      name: 'Барбекю',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198bf439a007604880d0231be87cd3e.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(20, 25),
+      },
+    },
+  });
+
+  const pizza6 = await prisma.product.create({
+    data: {
+      name: 'Гавайская',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198bf530345746e98039478001d5108.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(25, 30),
+      },
+    },
+  });
+
+  const pizza7 = await prisma.product.create({
+    data: {
+      name: 'Ветчина и грибы',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198c659b357718f9c77ad0dc392dadf.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(30, 35),
+      },
+    },
+  });
+
+  const pizza8 = await prisma.product.create({
+    data: {
+      name: 'Мясная',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198bf3b88d5772695c7f9e557b5b196.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(35, 40),
+      },
+    },
+  });
+
+  const pizza9 = await prisma.product.create({
+    data: {
+      name: 'Четыре сыра',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198bf48e02377e9adc0b190c9676321.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(0, 7),
+      },
+    },
+  });
+
+  const pizza10 = await prisma.product.create({
+    data: {
+      name: 'Деревенская',
+      imageUrl:
+        'https://media.dodostatic.net/image/r:233x233/0198bf4f806371f19d529f9e9e7dba36.avif',
+      categoryId: 1,
+      ingredients: {
+        connect: _ingredients.slice(7, 14),
+      },
+    },
+  });
+
   await prisma.productItem.createMany({
     data: [
       // Пицца "Пепперони фреш"
@@ -111,6 +196,41 @@ async function up() {
       generateProductItem({ productId: pizza3.id, pizzaType: 1, size: 20 }),
       generateProductItem({ productId: pizza3.id, pizzaType: 2, size: 30 }),
       generateProductItem({ productId: pizza3.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Маргарита"
+      generateProductItem({ productId: pizza4.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza4.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza4.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Барбекю"
+      generateProductItem({ productId: pizza5.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza5.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza5.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Гавайская"
+      generateProductItem({ productId: pizza6.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza6.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza6.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Ветчина и грибы"
+      generateProductItem({ productId: pizza7.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza7.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza7.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Мясная"
+      generateProductItem({ productId: pizza8.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza8.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza8.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Мясная"
+      generateProductItem({ productId: pizza9.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza9.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza9.id, pizzaType: 2, size: 40 }),
+
+      // Пицца "Деревенская"
+      generateProductItem({ productId: pizza10.id, pizzaType: 1, size: 20 }),
+      generateProductItem({ productId: pizza10.id, pizzaType: 2, size: 30 }),
+      generateProductItem({ productId: pizza10.id, pizzaType: 2, size: 40 }),
 
       // Остальные продукты
       generateProductItem({ productId: 1 }),
