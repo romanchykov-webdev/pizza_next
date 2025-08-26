@@ -32,8 +32,8 @@ export const Filters: React.FC<IFiltersProps> = ({ className }): JSX.Element => 
         <Title text="Фильтрация" size="sm" className=" font-bold" />
 
         {filters.hasFilters && (
-          <div className="relative cursor-pointer" onClick={filters.resetFilters}>
-            <Trash2 className="text-red-500" />
+          <div className="cursor-pointer" onClick={filters.resetFilters}>
+            <Trash2 className="text-red-500 w-5 h-5" />
           </div>
         )}
       </div>
