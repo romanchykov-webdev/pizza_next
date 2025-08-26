@@ -25,13 +25,15 @@ interface ReturnProps extends Filters {
   setPizzaTypes: (value: string) => void;
   setSizes: (value: string) => void;
   setSelectedIngredients: (value: string) => void;
+  resetFilters: () => void;
+  hasFilters: boolean;
 }
 
 export const useFilters = (): ReturnProps => {
   const searchParams = useSearchParams() as unknown as Map<keyof IQueryFilters, string>;
 
   /*Фильтр ингредиентов*/
-  const [selectedIngredients, { toggle: toggleIngredients }] = useSet(
+  const [selectedIngredients, { toggle: toggleIngredients, reset: resetIngredients }] = useSet(
     new Set<string>(searchParams.get('ingredients')?.split(',')),
   );
 
@@ -40,12 +42,12 @@ export const useFilters = (): ReturnProps => {
   // );
 
   /*Фильтр размкров*/
-  const [sizes, { toggle: toggleSizes }] = useSet(
+  const [sizes, { toggle: toggleSizes, reset: resetSizes }] = useSet(
     new Set<string>(searchParams.has('sizes') ? searchParams.get('sizes')?.split(',') : []),
   );
 
   /*Фильтр типа пиццы*/
-  const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(
+  const [pizzaTypes, { toggle: togglePizzaTypes, reset: resetPizzaTypes }] = useSet(
     new Set<string>(searchParams.has('sizes') ? searchParams.get('sizes')?.split(',') : []),
   );
 
@@ -61,6 +63,19 @@ export const useFilters = (): ReturnProps => {
       [name]: value,
     }));
   };
+  const resetFilters = () => {
+    resetIngredients();
+    resetSizes();
+    resetPizzaTypes();
+    setPrices({});
+  };
+
+  const hasFilters =
+    sizes.size > 0 ||
+    pizzaTypes.size > 0 ||
+    selectedIngredients.size > 0 ||
+    prices.priceFrom !== undefined ||
+    prices.priceTo !== undefined;
 
   return {
     sizes,
@@ -71,5 +86,7 @@ export const useFilters = (): ReturnProps => {
     setPizzaTypes: togglePizzaTypes,
     setSizes: toggleSizes,
     setSelectedIngredients: toggleIngredients,
+    resetFilters,
+    hasFilters,
   };
 };
