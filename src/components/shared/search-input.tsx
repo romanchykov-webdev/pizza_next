@@ -33,8 +33,9 @@ export const SearchInput: React.FC<ISearchInputProps> = ({ className }): JSX.Ele
       try {
         const response = await Api.products.search(searchQuery);
         setProducts(response);
+        console.log('SearchInput');
       } catch (err) {
-        console.log(err);
+        console.log('SearchInput', err);
       }
     },
     500,

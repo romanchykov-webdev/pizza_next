@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../../../prisma/prisma-client';
+// import { prisma } from '../../../../../prisma/prisma-client';
 
 // Обработчик GET-запроса.
 // Сигнатура строго фиксирована для Route Handlers: экспортируем функцию с именем HTTP-метода.
@@ -29,5 +30,3 @@ export async function GET(req: NextRequest) {
   // NextResponse сам выставит заголовок Content-Type: application/json.
   return NextResponse.json(product);
 }
-
-// export async function POST(reg: NextRequest) {}

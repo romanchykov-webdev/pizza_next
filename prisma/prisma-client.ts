@@ -1,48 +1,23 @@
-// // lib/prismaDynamic.ts
 // import { PrismaClient } from '@prisma/client';
 //
-// type TenantConfig = {
-//   databaseUrl: string;
-// };
+// const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 //
-// export function createPrismaClient(config: TenantConfig): PrismaClient {
-//   return new PrismaClient({
-//     datasources: {
-//       db: {
-//         url: config.databaseUrl,
-//       },
-//     },
+// export const prisma =
+//   globalForPrisma.prisma ||
+//   new PrismaClient({
+//     log: ['query', 'error', 'warn'],
 //   });
-// }
-// import { PrismaClient } from '@prisma/client';
-// const prismaClientSingleton = () = {
-//   return new PrismaClient();
-// };
-// declare global {
-//   var prismaGlobal: undefined | Return Type<typeof prismaClientSingleton>;
-// }
-// const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
-// export default prisma;
 //
-// if (process.env.NODE_ENV 'production') globalThis.prismaGlobal = prisma;
-
-// lib/prisma.ts
+// if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 import { PrismaClient } from '@prisma/client';
 
-const prismaClientSingleton = () => {
-  return new PrismaClient();
-};
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-declare global {
-  // Чтобы TS не ругался при повторном объявлении
-  // и чтобы хранить prisma в глобальной области
-  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
-}
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: ['query', 'error', 'warn'],
+  });
 
-export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
-
-if (process.env.NODE_ENV !== 'production') {
-  globalThis.prismaGlobal = prisma;
-}
-
-// export default prisma;
+// в dev кладём инстанс в globalThis, чтобы не плодились новые
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
