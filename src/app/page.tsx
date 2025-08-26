@@ -1,7 +1,19 @@
 import { Container, Filters, ProductsGroupList, Title, TopBar } from '@/components/shared';
 import { Suspense } from 'react';
+import { prisma } from '../../prisma/prisma-client';
 
-export default function Home() {
+export default async function Home() {
+  const categories = await prisma.category.findMany({
+    include: {
+      products: {
+        include: {
+          ingredients: true,
+          items: true,
+        },
+      },
+    },
+  });
+  console.log('categories', categories);
   return (
     <>
       <Container className="mt-10">
