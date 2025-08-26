@@ -41,4 +41,16 @@ from the creators of Next.js.
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for
 more details.
 
+[//]: # (open studio)
 npm run prisma:studio
+
+[//]: # (push data)
+npm run prisma:push
+
+[//]: # (sed)
+npm run prisma:seed
+
+[//]: # (install)
+npm run postinstall
+
+ 
