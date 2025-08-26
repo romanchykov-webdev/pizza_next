@@ -7,7 +7,7 @@ import { Input } from '@/components/ui';
 import { RangeSlider } from '@/components/shared/range-slider';
 import { CheckboxFiltersGroup } from '@/components/shared/checkbox-filters-group';
 import { useFilters, useIngredients, useQueryFilters } from '@/hooks';
-import { SlidersHorizontal, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 interface IFiltersProps {
   className?: string;
