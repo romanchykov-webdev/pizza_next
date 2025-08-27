@@ -3,17 +3,16 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   imageUrl: string;
-  alt: string;
   className?: string;
   size: number;
 }
 
-export const ProductImage: React.FC<Props> = ({ imageUrl, alt, className, size }): JSX.Element => {
+export const ProductImage: React.FC<Props> = ({ imageUrl, className, size }): JSX.Element => {
   return (
     <div className={cn('flex items-center justify-center flex-1 relative w-full', className)}>
       <img
         src={imageUrl}
-        alt={alt}
+        alt="Logo"
         className={cn('relative left-2 top-2 transition-all z-10 duration-300', {
           'w-[300px] h-[300px]': size === 20,
           'w-[400px] h-[400px]': size === 30,

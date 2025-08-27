@@ -47,7 +47,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <Container className="flex flex-col my-30 ">
       <div className="flex flex-1">
-        <ProductImage imageUrl={product.imageUrl} alt={product.name} size={20} />
+        <ProductImage imageUrl={product.imageUrl} size={20} />
 
         <div className="w-[490px] bg-[#f7f6f5] p-7">
           <Title text={product.name} size="md" className="font-extrabold mb-1" />

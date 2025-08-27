@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { ReactNode } from 'react';
 import { Header } from '@/components/shared';
 
 export const metadata: Metadata = {
@@ -7,15 +6,18 @@ export const metadata: Metadata = {
   description: 'Pizza',
 };
 
-export default function HomeLayout({
+export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
-  children: ReactNode;
+  children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
-    <main className="min-h-screen ">
+    <main className="min-h-screen bg-white">
       <Header />
       {children}
+      {modal ?? null}
     </main>
   );
 }
