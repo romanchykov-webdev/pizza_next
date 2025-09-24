@@ -1,6 +1,6 @@
-import React, { JSX } from 'react';
 import { cn } from '@/lib/utils';
 import { CircleCheck } from 'lucide-react';
+import React, { JSX } from 'react';
 
 interface Props {
   imageUrl: string;
@@ -23,7 +23,7 @@ export const Ingredient: React.FC<Props> = ({
     <div
       onClick={onClick}
       className={cn(
-        'flex items-center flex-col p-1 rounded-md  text-center relative cursor-pointer shadow-md bg-white',
+        'flex items-center flex-col p-1 rounded-md  text-center relative cursor-pointer shadow-md bg-white border border-transparent',
         { 'border border-[#FE5F00]': active },
         className,
       )}
