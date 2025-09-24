@@ -3,10 +3,10 @@
 ## Требования
 
 1. **Установите расширение "Prettier - Code formatter"**:
-   - Откройте VS Code
-   - Перейдите в Extensions (Ctrl+Shift+X)
-   - Найдите "Prettier - Code formatter" от Prettier
-   - Установите его
+    - Откройте VS Code
+    - Перейдите в Extensions (Ctrl+Shift+X)
+    - Найдите "Prettier - Code formatter" от Prettier
+    - Установите его
 
 2. **Перезапустите VS Code** после установки расширения
 
@@ -40,4 +40,3 @@ npm run format:check
 2. Если показывает другой форматтер, кликните на него и выберите "Prettier"
 3. Убедитесь, что файл `.prettierrc` существует в корне проекта
 4. Перезапустите VS Code
-
