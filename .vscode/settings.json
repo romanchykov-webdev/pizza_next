@@ -45,7 +45,10 @@
 		"editor.formatOnSave": true
 	},
 	"[markdown]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true
+		"editor.formatOnSave": false,
+		"editor.defaultFormatter": null
+	},
+	"files.associations": {
+		"*.mdc": "markdown"
 	}
 }
