@@ -8,6 +8,7 @@ export { Container } from "./container";
 export { CountButton } from "./count-button";
 // export { CountIconButton } from "./count-icon-button";
 export { FilterCheckbox } from "./filter-checkbox";
+export { FilterDrawer } from "./filter-drawer";
 export { Filters } from "./filters";
 export { GroupVariants } from "./group-variants";
 export { Header } from "./header";

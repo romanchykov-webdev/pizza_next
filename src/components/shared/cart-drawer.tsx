@@ -21,7 +21,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 	return (
 		<Sheet>
 			<SheetTrigger asChild>{children}</SheetTrigger>
-			<SheetContent className="flex flex-col justify-between pb-0 bg-[#F4F1EE] ">
+			<SheetContent side="right" className="flex flex-col justify-between pb-0 bg-[#F4F1EE] sm:max-w-md w-full ">
 				<SheetHeader>
 					<SheetTitle>
 						В корзине <span className="font-bold">3 товаров</span>
@@ -39,7 +39,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 					/>
 				</div>
 
-				<SheetFooter className=" bg-white p-8">
+				<SheetFooter className="bg-white p-4 sm:p-8 mt-auto sticky bottom-0 left-0 right-0">
 					<div className="w-full">
 						<div className="flex mb-4">
 							<span className="flex flex-1 text-lg text-neutral-500">

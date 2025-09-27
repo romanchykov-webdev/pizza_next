@@ -15,7 +15,8 @@ interface IHeaderProps {
 export const Header: React.FC<IHeaderProps> = ({ className }): JSX.Element => {
 	return (
 		<header className={cn("border border-b", className)}>
-			<Container className="flex items-center justify-between py-8">
+			{/* Desktop Header */}
+			<Container className="hidden md:flex  items-center justify-between py-8">
 				{/*  left block*/}
 				<Link href="/">
 					<div className="flex items-center gap-4">
@@ -29,12 +30,41 @@ export const Header: React.FC<IHeaderProps> = ({ className }): JSX.Element => {
 				</Link>
 
 				{/*search*/}
-				<div className=" mx-10 flex-1">
+				<div className="mx-10 flex-1">
 					<SearchInput />
 				</div>
 
 				{/* Правая часть */}
 				<div className="flex items-center gap-3">
+					<Button variant="outline" className="flex items-center gap-1">
+						<User size={16} />
+						Войти
+					</Button>
+
+					<CartButton />
+				</div>
+			</Container>
+
+			{/* Mobile Header */}
+			<Container className="flex md:hidden flex-col py-4 gap-4">
+				{/*  left block*/}
+				<div className="flex justify-center">
+					<Link href="/">
+						<div className="flex flex-col items-center">
+							<Image src="/logo.png" alt="logo" width={40} height={40} />
+							<h1 className="text-xl uppercase font-black">Next Pizza</h1>
+							<p className="text-xs text-gray-400">вкусней уже некуда</p>
+						</div>
+					</Link>
+				</div>
+
+				{/*search*/}
+				<div className="w-full">
+					<SearchInput />
+				</div>
+
+				{/* Правая часть */}
+				<div className="flex items-center justify-center gap-4">
 					<Button variant="outline" className="flex items-center gap-1">
 						<User size={16} />
 						Войти
