@@ -4,6 +4,8 @@ import { prisma } from "../../../../../prisma/prisma-client";
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
 	try {
+		console.time("PATCH_CART_TOTAL"); // Начало измерения общего времени
+
 		const id = Number(params.id);
 
 		const data = (await req.json()) as { quantity: number };
@@ -14,15 +16,21 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 			return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 401 });
 		}
 
+		console.time("FIND_CART_ITEM"); // Измерение времени поиска элемента
+
 		const cartItem = await prisma.cartItem.findFirst({
 			where: {
 				id,
 			},
 		});
 
+		console.timeEnd("FIND_CART_ITEM");
+
 		if (!cartItem) {
 			return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 404 });
 		}
+
+		console.time("UPDATE_CART_ITEM"); // Измерение времени обновления элемента
 
 		await prisma.cartItem.update({
 			where: {
@@ -33,7 +41,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 			},
 		});
 
+		console.timeEnd("UPDATE_CART_ITEM");
+
+		console.time("UPDATE_CART_TOTAL"); // Измерение времени обновления общей суммы
+
 		const updateUserCart = await updateCartTotalAmount(token);
+
+		console.timeEnd("UPDATE_CART_TOTAL");
+
+		console.timeEnd("PATCH_CART_TOTAL"); // Конец измерения общего времени
 
 		return NextResponse.json(updateUserCart);
 

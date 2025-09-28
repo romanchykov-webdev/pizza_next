@@ -47,10 +47,18 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 	};
 
 	return (
-		<div className={cn(className, "flex flex-1 ")}>
-			<ProductImage imageUrl={imageUrl} size={size} className="w-[400px]" />
+		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
+			{/* Левая часть (на моб/планшете будет сверху) */}
+			<div className="w-full p-4 sm:p-6 bg-red-500 flex justify-center items-center">
+				<ProductImage
+					imageUrl={imageUrl}
+					size={size}
+					className="md:[95%] md:h-auto lg:w-[400px] lg:h-auto object-contain flex-shrink-0"
+				/>
+			</div>
 
-			<div className="w-[490px] bg-[#FCFCFC] p-7">
+			{/* Правая часть (на моб/планшете будет снизу, на lg — справа) */}
+			<div className="w-full lg:w-[490px] bg-[#FCFCFC] p-4 lg:p-7 overflow-auto">
 				<Title text={name} size="md" className="font-extrabold mb-1" />
 
 				<p className="text-gray-400">{textDetails}</p>
@@ -70,7 +78,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 					/>
 				</div>
 
-				<div className="bg-gray-50 p-5 rounded-md h-[420px] overflow-auto scrollbar  mb-3">
+				<div className="bg-gray-50 p-5 rounded-md h-[220px] sm:h-[260px] lg:h-[300px] overflow-auto scrollbar mb-3">
 					<IngredientsList
 						ingredients={ingredients}
 						onClickAdd={addIngredient}
@@ -81,7 +89,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 				<Button
 					loading={false}
 					onClick={handleClickAdd}
-					className="h-[55px] px-10 text-base rounded-[18px] w-full"
+					className="h-[55px] px-10 text-base rounded-[18px] w-full sticky bottom-0 mt-2"
 				>
 					Добавить в корзину за {totalPrice} ₽
 				</Button>

@@ -21,10 +21,9 @@ export const ChooseProductModal: React.FC<Props> = ({ product }) => {
 
 	return (
 		<Dialog open={Boolean(product)} onOpenChange={onCloseModal}>
-			<DialogContent className="p-0 w-[1060px] max-w-[1060px] min-h-[500px] bg-white overflow-hidden ">
+			<DialogContent className="p-0 w-full max-w-[1060px] bg-white overflow-auto  lg:w-[1060px] h-[90vh] lg:h-auto rounded-lg">
 				<VisuallyHidden>
-					{" "}
-					<DialogTitle>{}</DialogTitle>
+					<DialogTitle>{"dialog title"}</DialogTitle>
 				</VisuallyHidden>
 
 				{isPizzaForm ? (
