@@ -30,6 +30,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 	const items = useCartStore((state) => state.items);
 	const updateItemQuantity = useCartStore((state) => state.updateItemQuantity);
 	const loading = useCartStore((state) => state.loading);
+	const removeCartItem = useCartStore((state) => state.removeCartItem);
 
 	useEffect(() => {
 		fetchCartItems();
@@ -73,6 +74,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 							price={item.price}
 							quantity={item.quantity}
 							onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+							onClickRemove={() => removeCartItem(item.id)}
 						/>
 					))}
 				</div>

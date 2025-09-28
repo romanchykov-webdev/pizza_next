@@ -4,7 +4,7 @@ import { prisma } from "../../../../../prisma/prisma-client";
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
 	try {
-		console.time("PATCH_CART_TOTAL"); // Начало измерения общего времени
+		// console.time("PATCH_CART_TOTAL");
 
 		const id = Number(params.id);
 
@@ -16,7 +16,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 			return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 401 });
 		}
 
-		console.time("FIND_CART_ITEM"); // Измерение времени поиска элемента
+		// console.time("FIND_CART_ITEM");
 
 		const cartItem = await prisma.cartItem.findFirst({
 			where: {
@@ -24,13 +24,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 			},
 		});
 
-		console.timeEnd("FIND_CART_ITEM");
+		// console.timeEnd("FIND_CART_ITEM");
 
 		if (!cartItem) {
 			return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 404 });
 		}
 
-		console.time("UPDATE_CART_ITEM"); // Измерение времени обновления элемента
+		// console.time("UPDATE_CART_ITEM");
 
 		await prisma.cartItem.update({
 			where: {
@@ -41,22 +41,57 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 			},
 		});
 
-		console.timeEnd("UPDATE_CART_ITEM");
+		// console.timeEnd("UPDATE_CART_ITEM");
 
-		console.time("UPDATE_CART_TOTAL"); // Измерение времени обновления общей суммы
-
+		// console.time("UPDATE_CART_TOTAL");
 		const updateUserCart = await updateCartTotalAmount(token);
 
-		console.timeEnd("UPDATE_CART_TOTAL");
+		// console.timeEnd("UPDATE_CART_TOTAL");
 
-		console.timeEnd("PATCH_CART_TOTAL"); // Конец измерения общего времени
+		// console.timeEnd("PATCH_CART_TOTAL");
 
 		return NextResponse.json(updateUserCart);
 
 		//
 	} catch (error) {
-		console.log("[CART_PATCH] Server error", error);
+		// console.log("[CART_PATCH] Server error", error);
 
 		return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 500 });
+	}
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+	try {
+		const id = Number(params.id);
+
+		const token = req.cookies.get("cartToken")?.value;
+
+		if (!token) {
+			return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 401 });
+		}
+
+		const cartItem = await prisma.cartItem.findFirst({
+			where: {
+				id,
+			},
+		});
+
+		if (!cartItem) {
+			return NextResponse.json({ message: "Не удалось удалить корзину" }, { status: 404 });
+		}
+
+		await prisma.cartItem.delete({
+			where: {
+				id,
+			},
+		});
+
+		const updateUserCart = await updateCartTotalAmount(token);
+
+		return NextResponse.json(updateUserCart);
+	} catch (error) {
+		console.log("[CART_DELETE] Server error", error);
+
+		return NextResponse.json({ message: "Не удалось удалить корзину" }, { status: 500 });
 	}
 }

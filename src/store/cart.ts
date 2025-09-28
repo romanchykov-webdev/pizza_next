@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { Api } from "../../services/api-client";
 import { getCartDetails } from "@/lib";
 import { CartStateItem } from "@/lib/get-cart-details";
+import { create } from "zustand";
+import { Api } from "../../services/api-client";
 
 export interface CartState {
 	loading: boolean;
@@ -21,6 +21,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 	loading: true,
 	totalAmount: 0,
 
+	//
 	fetchCartItems: async () => {
 		try {
 			set({ loading: true, error: false });
@@ -33,19 +34,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 			set({ loading: false });
 		}
 	},
-	//
-	removeCartItem: async (id: number) => {
-		// try {
-		// 	set({ loading: true, error: false });
-		// 	const data = await Api.cart.removeCartItem(id);
-		// 	set(getCartDetails(data));
-		// } catch (error) {
-		// 	set({ error: true });
-		// 	console.error(error);
-		// } finally {
-		// 	set({ loading: false });
-		// }
-	},
+
 	//
 	updateItemQuantity: async (id: number, quantity: number) => {
 		try {
@@ -72,5 +61,18 @@ export const useCartStore = create<CartState>((set, get) => ({
 		// } finally {
 		//   set({ loading: false });
 		// }
+	},
+	//
+	removeCartItem: async (id: number) => {
+		try {
+			set({ loading: true, error: false });
+			const data = await Api.cart.removeCartItem(id);
+			set(getCartDetails(data));
+		} catch (error) {
+			set({ error: true });
+			console.error(error);
+		} finally {
+			set({ loading: false });
+		}
 	},
 }));

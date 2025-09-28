@@ -102,14 +102,16 @@ model Cart {
 model CartItem {
   id Int @id @default(autoincrement())
 
-  productItemId Int
-  productItem   ProductItem @relation(fields: [productItemId], references: [id])
-
-  cartId Int
   cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId Int
 
   ingredients Ingredient[]
-  quantity    Int
+
+  quantity    Int @default(1)
+  
   pizzaSize   Int?
   type        Int?
 

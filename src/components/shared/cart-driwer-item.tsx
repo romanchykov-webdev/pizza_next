@@ -9,6 +9,7 @@ interface ICartDriwerItemProps extends CartItemProps {
 	onClickCountButton?: (type: "plus" | "minus") => void;
 	loading?: boolean;
 	className?: string;
+	onClickRemove?: () => void;
 }
 
 export const CartDriwerItem: React.FC<ICartDriwerItemProps> = ({
@@ -21,6 +22,7 @@ export const CartDriwerItem: React.FC<ICartDriwerItemProps> = ({
 	onClickCountButton,
 	loading,
 	className,
+	onClickRemove,
 }): JSX.Element => {
 	return (
 		<div className={cn("flex bg-white p-5 gap-6 rounded-lg relative overflow-hidden", className)}>
@@ -42,7 +44,11 @@ export const CartDriwerItem: React.FC<ICartDriwerItemProps> = ({
 					<div className="flex items-center gap-3">
 						<CartItem.Price value={price} />
 
-						<Trash2Icon className="text-gray-400 cursor-pointer hover:text-red-600 " size={16} />
+						<Trash2Icon
+							onClick={onClickRemove}
+							className="text-gray-400 cursor-pointer hover:text-red-600 "
+							size={16}
+						/>
 					</div>
 				</div>
 			</div>
