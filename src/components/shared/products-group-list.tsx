@@ -15,10 +15,9 @@ interface Props {
 	// items: ProductWithRelations[];
 	categoryId: number;
 	className?: string;
-	listClassName?: string;
 }
 
-export const ProductsGroupList: React.FC<Props> = ({ title, items, listClassName, categoryId, className }) => {
+export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, className }) => {
 	const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
 
 	const intersectionRef = useRef<HTMLDivElement>(null);
@@ -38,12 +37,7 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, listClassName
 		<div className={className} id={title} ref={intersectionRef} style={{ scrollMarginTop: "120px" }}>
 			<Title text={title} size="lg" className="font-extrabold mb-5" />
 
-			<div
-				className={cn(
-					"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-[50px]",
-					listClassName,
-				)}
-			>
+			<div className={cn("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4")}>
 				{items
 					.filter((product) => product.items.length > 0)
 					.map((product) => (

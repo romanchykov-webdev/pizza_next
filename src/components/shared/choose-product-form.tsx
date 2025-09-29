@@ -1,77 +1,50 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import React from 'react';
-import { Button } from '../ui/button';
-import { Title } from './title';
+import { cn } from "@/lib/utils";
+import React from "react";
+import { Button } from "../ui/button";
+import { Title } from "./title";
 // import { IProduct } from '@/hooks/use-choose-pizza';
-import toast from 'react-hot-toast';
-import { DialogTitle } from '@/components/ui/dialog';
 
 // import { useCart } from '@/hooks/use-cart';
 
 interface Props {
-  imageUrl: string;
-  name: string;
-  className?: string;
-  // items?: IProduct['items'];
-  items?: any;
-  onClickAdd?: VoidFunction;
+	imageUrl: string;
+	name: string;
+	price: number;
+	loading: boolean;
+	onSubmit?: VoidFunction;
+	className?: string;
+	// items?: IProduct['items'];
+	// items?: any;
 }
 
-export const ChooseProductForm: React.FC<Props> = ({
-  name,
-  items,
-  imageUrl,
-  onClickAdd,
-  className,
-}) => {
-  // const { addCartItem, loading } = useCart();
+/**
+ * Форма выбора продукта
+ */
 
-  const productItem = items?.[0];
+export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, onSubmit, className, price, loading }) => {
+	return (
+		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
+			<div className="flex items-center justify-center flex-1 relative lg:w-[50%] w-full h-[400px] p-4 md:p-0 ">
+				<img
+					src={imageUrl}
+					alt={name}
+					className="relative md:left-2 md:top-2 transition-all z-10 duration-300 w-[200px] h-[200px] md:w-[300px] md:h-[300px] object-contain"
+				/>
+			</div>
 
-  if (!productItem) {
-    throw new Error('Продукт не найден');
-  }
+			<div className="bg-gray-50 px-2 py-5 rounded-md mb-3 h-auto overflow-auto lg:w-[50%] w-full">
+				<Title text={name} size="md" className="font-extrabold mb-1 text-center" />
 
-  const productPrice = productItem.price;
-
-  const handleClickAdd = async () => {
-    try {
-      // await addCartItem({
-      //   productItemId: productItem.id,
-      //   quantity: 1,
-      // });
-      toast.success('Товар добавлен в корзину');
-    } catch (error) {
-      console.error(error);
-      toast.error('Произошла ошибка при добавлении в корзину');
-    }
-
-    onClickAdd?.();
-  };
-
-  return (
-    <div className={cn(className, 'flex flex-1')}>
-      <div className="flex items-center justify-center flex-1 relative w-full">
-        <img
-          src={imageUrl}
-          alt={name}
-          className="relative left-2 top-2 transition-all z-10 duration-300 w-[300px] h-[300px]"
-        />
-      </div>
-
-      <div className="w-[490px] bg-[#FCFCFC] p-7">
-        <Title text={name} size="md" className="font-extrabold mb-1" />
-
-        <Button
-          loading={false}
-          onClick={handleClickAdd}
-          className="h-[55px] px-10 text-base rounded-[18px] w-full mt-5"
-        >
-          Добавить в корзину за {productPrice} ₽
-        </Button>
-      </div>
-    </div>
-  );
+				<Button
+					onClick={() => onSubmit?.()}
+					loading={loading}
+					className="h-[55px] px-10 text-base rounded-[18px] w-full mt-5"
+				>
+					Добавить в корзину за {price} ₽
+				</Button>
+			</div>
+		</div>
+	);
 };

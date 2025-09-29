@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../../prisma/prisma-client';
+import { NextResponse } from "next/server";
 
 export async function GET() {
-
+	return NextResponse.json({ message: "Uploadthing API is not implemented yet" });
 }
 
-export async function POST(reg: NextRequest) {
-
-}
+// Остальные комментарии можно оставить
+// export async function POST(req: NextRequest) {
+//   // реализация
+// }
