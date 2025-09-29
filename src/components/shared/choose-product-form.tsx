@@ -5,48 +5,28 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Title } from "./title";
 // import { IProduct } from '@/hooks/use-choose-pizza';
-import toast from "react-hot-toast";
 
 // import { useCart } from '@/hooks/use-cart';
 
 interface Props {
 	imageUrl: string;
 	name: string;
+	price: number;
+	loading: boolean;
+	onSubmit?: VoidFunction;
 	className?: string;
 	// items?: IProduct['items'];
-	items?: any;
-	onClickAdd?: VoidFunction;
+	// items?: any;
 }
 
-export const ChooseProductForm: React.FC<Props> = ({ name, items, imageUrl, onClickAdd, className }) => {
-	// const { addCartItem, loading } = useCart();
+/**
+ * Форма выбора продукта
+ */
 
-	const productItem = items?.[0];
-
-	if (!productItem) {
-		throw new Error("Продукт не найден");
-	}
-
-	const productPrice = productItem.price;
-
-	const handleClickAdd = async () => {
-		try {
-			// await addCartItem({
-			//   productItemId: productItem.id,
-			//   quantity: 1,
-			// });
-			toast.success("Товар добавлен в корзину");
-		} catch (error) {
-			console.error(error);
-			toast.error("Произошла ошибка при добавлении в корзину");
-		}
-
-		onClickAdd?.();
-	};
-
+export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, onSubmit, className, price, loading }) => {
 	return (
-		<div className={cn(className, "flex flex-col md:flex-row flex-1")}>
-			<div className="flex items-center justify-center flex-1 relative w-full p-4 md:p-0">
+		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
+			<div className="flex items-center justify-center flex-1 relative lg:w-[50%] w-full h-[400px] p-4 md:p-0 ">
 				<img
 					src={imageUrl}
 					alt={name}
@@ -54,15 +34,15 @@ export const ChooseProductForm: React.FC<Props> = ({ name, items, imageUrl, onCl
 				/>
 			</div>
 
-			<div className="w-full md:w-[490px] bg-[#FCFCFC] p-4 md:p-7">
-				<Title text={name} size="md" className="font-extrabold mb-1" />
+			<div className="bg-gray-50 px-2 py-5 rounded-md mb-3 h-auto overflow-auto lg:w-[50%] w-full">
+				<Title text={name} size="md" className="font-extrabold mb-1 text-center" />
 
 				<Button
-					loading={false}
-					onClick={handleClickAdd}
+					onClick={() => onSubmit?.()}
+					loading={loading}
 					className="h-[55px] px-10 text-base rounded-[18px] w-full mt-5"
 				>
-					Добавить в корзину за {productPrice} ₽
+					Добавить в корзину за {price} ₽
 				</Button>
 			</div>
 		</div>

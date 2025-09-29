@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
 
 		const data = (await req.json()) as CreateCartItemValues;
 
+		// Ищем точно такой же товар с такими же ингредиентами
 		const findCartItem = await prisma.cartItem.findFirst({
 			where: {
 				cartId: userCart.id,
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
 			},
 		});
 
-		// Если товар был в корзине, то обновляем количество
+		// Если точно такой же товар найден - увеличиваем количество
 		if (findCartItem) {
 			await prisma.cartItem.update({
 				where: {
@@ -74,17 +75,17 @@ export async function POST(req: NextRequest) {
 				},
 			});
 
-			//
+			// Иначе создаем новый товар
+		} else {
+			await prisma.cartItem.create({
+				data: {
+					cartId: userCart.id,
+					productItemId: data.productItemId,
+					quantity: 1,
+					ingredients: { connect: data.ingredients?.map((id) => ({ id })) },
+				},
+			});
 		}
-
-		await prisma.cartItem.create({
-			data: {
-				cartId: userCart.id,
-				productItemId: data.productItemId,
-				quantity: 1,
-				ingredients: { connect: data.ingredients?.map((id) => ({ id })) },
-			},
-		});
 
 		const updateUserCart = await updateCartTotalAmount(token);
 

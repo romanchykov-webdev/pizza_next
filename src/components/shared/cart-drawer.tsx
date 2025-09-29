@@ -16,10 +16,7 @@ interface ICartDrawerProps {
 	className?: string;
 }
 
-export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = ({
-	className,
-	children,
-}): JSX.Element => {
+export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = ({ children }): JSX.Element => {
 	// const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
 	// 	state.totalAmount,
 	// 	state.fetchCartItems,
@@ -34,7 +31,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 
 	useEffect(() => {
 		fetchCartItems();
-	}, []);
+	}, [fetchCartItems]);
 
 	const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
 		// console.log(id, quantity, type);

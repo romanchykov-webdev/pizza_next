@@ -11,7 +11,7 @@ interface IFilterDrawerProps {
 }
 
 export const FilterDrawer: React.FC<React.PropsWithChildren<IFilterDrawerProps>> = ({
-	className,
+	// className,
 	children,
 }): JSX.Element => {
 	return (

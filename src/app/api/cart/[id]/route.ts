@@ -2,10 +2,13 @@ import { updateCartTotalAmount } from "@/lib/update-cart-total-amount";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma/prisma-client";
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+// export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
 		// console.time("PATCH_CART_TOTAL");
 
+		// const id = Number(params.id);
+		const params = await context.params;
 		const id = Number(params.id);
 
 		const data = (await req.json()) as { quantity: number };
@@ -54,14 +57,17 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 		//
 	} catch (error) {
-		// console.log("[CART_PATCH] Server error", error);
+		console.log("[CART_PATCH] Server error", error);
 
 		return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 500 });
 	}
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+// export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
+		// const id = Number(params.id);
+		const params = await context.params;
 		const id = Number(params.id);
 
 		const token = req.cookies.get("cartToken")?.value;
