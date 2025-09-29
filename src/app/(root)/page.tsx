@@ -26,7 +26,7 @@ export default async function Home() {
 			<Container className="mt-10 pb-16">
 				<div className="flex gap-[80px]">
 					{/* Фильтрация на десктопах */}
-					<div className="w-[250px] hidden md:block">
+					<div className="w-[250px] hidden lg:block">
 						<Suspense fallback={<div>Загрузка фильтров...</div>}>
 							<Filters />
 						</Suspense>

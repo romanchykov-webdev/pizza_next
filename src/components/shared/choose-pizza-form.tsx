@@ -16,27 +16,38 @@ import { Ingredient, ProductItem } from "@prisma/client";
 interface Props {
 	imageUrl: string;
 	name: string;
-	className?: string;
 	ingredients: Ingredient[];
-	items?: ProductItem[];
-	onClickAdd?: VoidFunction;
+	loading: boolean;
+	items: ProductItem[];
+	onSubmit: (itemId: number, ingredients: number[]) => void;
+	className?: string;
 }
+
+/**
+ * Форма выбора пиццы
+ */
 
 export const ChoosePizzaForm: React.FC<Props> = ({
 	name,
-	items = [],
+	items,
 	imageUrl,
 	ingredients,
-	onClickAdd,
+	onSubmit,
 	className,
+	loading,
 }) => {
-	const { size, type, selectedIngredients, availableSizes, setType, setSize, addIngredient } = usePizzaOptions(items);
+	//
+	const { size, type, selectedIngredients, availableSizes, currentItemId, setType, setSize, addIngredient } =
+		usePizzaOptions(items);
 
 	const { textDetails, totalPrice } = getPizzaDetails(type, size, items, ingredients, selectedIngredients);
 
 	const handleClickAdd = async () => {
-		onClickAdd?.();
-		console.log({ size, type, ingredients, selectedIngredients });
+		//
+		if (currentItemId) {
+			onSubmit(currentItemId, Array.from(selectedIngredients));
+		}
+		// console.log({ size, type, ingredients, selectedIngredients });
 		// try {
 		//   await addPizza();
 		//   onClickAdd?.();
@@ -45,12 +56,21 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 		//   console.error(error);
 		// }
 	};
+	console.log({ ingredients });
 
 	return (
-		<div className={cn(className, "flex flex-1 ")}>
-			<ProductImage imageUrl={imageUrl} size={size} className="w-[400px]" />
+		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
+			{/* Левая часть  */}
+			<div className="w-full lg:w-[60%] p-4 sm:p-6 flex justify-center items-center ">
+				<ProductImage
+					imageUrl={imageUrl}
+					size={size}
+					className="md:[95%] md:h-[400px] lg:w-[400px] lg:h-auto object-contain flex-shrink-0"
+				/>
+			</div>
 
-			<div className="w-[490px] bg-[#FCFCFC] p-7">
+			{/* Правая часть - нижняя часть */}
+			<div className="w-full lg:w-[490px] bg-[#FCFCFC] p-4 lg:p-7 overflow-auto ">
 				<Title text={name} size="md" className="font-extrabold mb-1" />
 
 				<p className="text-gray-400">{textDetails}</p>
@@ -70,18 +90,20 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 					/>
 				</div>
 
-				<div className="bg-gray-50 p-5 rounded-md h-[420px] overflow-auto scrollbar  mb-3">
-					<IngredientsList
-						ingredients={ingredients}
-						onClickAdd={addIngredient}
-						selectedIds={selectedIngredients}
-					/>
+				<div className="bg-gray-50 px-2 py-5 rounded-md mb-5 h-[350px] overflow-auto ">
+					{ingredients.length > 0 && (
+						<IngredientsList
+							ingredients={ingredients}
+							onClickAdd={addIngredient}
+							selectedIds={selectedIngredients}
+						/>
+					)}
 				</div>
 
 				<Button
-					loading={false}
+					loading={loading}
 					onClick={handleClickAdd}
-					className="h-[55px] px-10 text-base rounded-[18px] w-full"
+					className="h-[55px] px-10 text-base rounded-[18px] w-full sticky bottom-0"
 				>
 					Добавить в корзину за {totalPrice} ₽
 				</Button>

@@ -11,14 +11,14 @@ interface IFilterDrawerProps {
 }
 
 export const FilterDrawer: React.FC<React.PropsWithChildren<IFilterDrawerProps>> = ({
-	className,
+	// className,
 	children,
 }): JSX.Element => {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
 				{children || (
-					<Button variant="outline" size="icon" className="md:hidden">
+					<Button variant="outline" size="icon" className="lg:hidden">
 						<SlidersHorizontal className="h-5 w-5" />
 					</Button>
 				)}
