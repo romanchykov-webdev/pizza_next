@@ -23,6 +23,7 @@ export const ProductCard: React.FC<Props> = ({
 	// ingredients,
 	className,
 }) => {
+	// console.log({ name, price });
 	return (
 		<div className={className}>
 			<Link href={`/product/${id}`}>
@@ -33,8 +34,8 @@ export const ProductCard: React.FC<Props> = ({
 				<Title text={name} size="sm" className="mb-1 mt-3 font-bold" />
 
 				<p className="text-sm text-gray-400">
-					Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо, чеснок
-					{/*{ingredients.map((ingredient) => ingredient.name).join(', ')}*/}
+					{/* Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо, чеснок */}
+					{/* {ingredients.map((ingredient) => ingredient.name).join(', ')} */}
 				</p>
 
 				<div className="flex justify-between items-center mt-4">

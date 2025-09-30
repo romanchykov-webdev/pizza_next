@@ -40,15 +40,19 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, c
 			<div className={cn("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4")}>
 				{items
 					.filter((product) => product.items.length > 0)
-					.map((product) => (
-						<ProductCard
-							key={product.id}
-							id={product.id}
-							name={product.name}
-							imageUrl={product.imageUrl}
-							price={product.items[0].price}
-						/>
-					))}
+					.map((product) => {
+						// Находим минимальную цену из всех вариантов
+						const minPrice = Math.min(...product.items.map((item) => item.price));
+						return (
+							<ProductCard
+								key={product.id}
+								id={product.id}
+								name={product.name}
+								imageUrl={product.imageUrl}
+								price={minPrice}
+							/>
+						);
+					})}
 			</div>
 		</div>
 	);
