@@ -5,14 +5,15 @@ import { useIntersection } from "react-use";
 
 import { cn } from "@/lib/utils";
 import { useCategoryStore } from "@/store/category";
+
+import { ProductWithRelations } from "../../../@types/prisma";
 import { ProductCard } from "./product-card";
 import { Title } from "./title";
 
 interface Props {
 	title: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	items: any[];
-	// items: ProductWithRelations[];
+
+	items: ProductWithRelations[];
 	categoryId: number;
 	className?: string;
 }
@@ -40,15 +41,20 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, c
 			<div className={cn("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4")}>
 				{items
 					.filter((product) => product.items.length > 0)
-					.map((product) => (
-						<ProductCard
-							key={product.id}
-							id={product.id}
-							name={product.name}
-							imageUrl={product.imageUrl}
-							price={product.items[0].price}
-						/>
-					))}
+					.map((product) => {
+						// Находим минимальную цену из всех вариантов
+						const minPrice = Math.min(...product.items.map((item) => item.price));
+						return (
+							<ProductCard
+								key={product.id}
+								id={product.id}
+								name={product.name}
+								imageUrl={product.imageUrl}
+								price={minPrice}
+								ingredients={product.ingredients}
+							/>
+						);
+					})}
 			</div>
 		</div>
 	);
