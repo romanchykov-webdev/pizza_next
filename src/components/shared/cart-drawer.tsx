@@ -39,7 +39,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 		updateItemQuantity(id, newQuantity);
 	};
 
-	console.log("loading", loading);
+	// console.log("loading", loading);
 
 	return (
 		<Sheet>
