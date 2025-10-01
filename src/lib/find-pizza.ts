@@ -15,6 +15,7 @@ export interface GetSearchParams {
 const DEFAULT_MIN_PRICE = 0;
 const DEFAULT_MAX_PRICE = 1000;
 
+// TODO: Добавить лимит и страницу
 // const DEFAULT_LIMIT = 12;
 // const DEFAULT_PAGE = 1;
 
@@ -32,51 +33,9 @@ export const findPizzas = async (params: GetSearchParams) => {
 	const minPrice = Number(params.priceFrom) || DEFAULT_MIN_PRICE;
 	const maxPrice = Number(params.priceTo) || DEFAULT_MAX_PRICE;
 
-	let priceFilter = {};
-	if (Number.isFinite(minPrice)) priceFilter = { ...priceFilter, gte: minPrice };
-	if (Number.isFinite(maxPrice)) priceFilter = { ...priceFilter, lte: maxPrice };
-
-	// //
-
-	// // Создаем базовый запрос для фильтрации товаров
-	// const whereCondition: any = {};
-
-	// // Добавляем фильтр по ингредиентам, если они выбраны
-	// if (ingredientsIdArr && ingredientsIdArr.length > 0) {
-	// 	whereCondition.ingredients = {
-	// 		some: {
-	// 			id: {
-	// 				in: ingredientsIdArr,
-	// 			},
-	// 		},
-	// 	};
-	// }
-
-	// // Создаем условие для фильтрации по размеру и типу пиццы
-	// const itemsCondition: any = {};
-
-	// // Добавляем фильтр по цене всегда, независимо от других фильтров
-	// if (Object.keys(priceFilter).length > 0) {
-	// 	itemsCondition.price = priceFilter;
-	// }
-
-	// // Добавляем фильтр по размеру и типу пиццы только если они выбраны
-	// if (size && size.length > 0) {
-	// 	itemsCondition.size = { in: size };
-	// }
-
-	// if (pizzaType && pizzaType.length > 0) {
-	// 	itemsCondition.pizzaType = { in: pizzaType };
-	// }
-
-	// // Добавляем условие для items только если есть хотя бы один фильтр
-	// if (Object.keys(itemsCondition).length > 0) {
-	// 	whereCondition.items = {
-	// 		some: itemsCondition,
-	// 	};
-	// }
-
-	//
+	// let priceFilter = {};
+	// if (Number.isFinite(minPrice)) priceFilter = { ...priceFilter, gte: minPrice };
+	// if (Number.isFinite(maxPrice)) priceFilter = { ...priceFilter, lte: maxPrice };
 
 	const categories = await prisma.category.findMany({
 		include: {
@@ -84,27 +43,9 @@ export const findPizzas = async (params: GetSearchParams) => {
 				orderBy: {
 					id: "desc",
 				},
-				// where: {
-				// 	ingredients: ingredientsIdArr
-				// 		? {
-				// 				some: {
-				// 					id: {
-				// 						in: ingredientsIdArr,
-				// 					},
-				// 				},
-				// 			}
-				// 		: undefined,
-				// 	items: {
-				// 		some: {
-				// 			...(size && size.length > 0 ? { size: { in: size } } : {}),
-				// 			...(pizzaType && pizzaType.length > 0 ? { pizzaType: { in: pizzaType } } : {}),
-				// 			...(Object.keys(priceFilter).length > 0 ? { price: priceFilter } : {}),
-				// 		},
-				// 	},
-				// },
-				// where: whereCondition,
+
 				where: {
-					// Фильтрация по ингредиентам, если они выбраны
+					// Фильтрация по ингредиентам
 					...(ingredientsIdArr && ingredientsIdArr.length > 0
 						? {
 								ingredients: {
@@ -117,11 +58,9 @@ export const findPizzas = async (params: GetSearchParams) => {
 							}
 						: {}),
 
-					// Важно: для фильтрации по цене используем some, чтобы найти продукты,
-					// у которых есть хотя бы один item в указанном диапазоне цен
 					items: {
 						some: {
-							// Фильтр по цене всегда применяется
+							// Фильтр по цене
 							price: {
 								gte: minPrice,
 								lte: maxPrice,
@@ -135,6 +74,17 @@ export const findPizzas = async (params: GetSearchParams) => {
 				include: {
 					ingredients: true,
 					items: true,
+					// {
+					// 	where: {
+					// 		price: {
+					// 			gte: minPrice,
+					// 			lte: maxPrice,
+					// 		},
+					// 	},
+					// 	orderBy: {
+					// 		price: "asc",
+					// 	},
+					// },
 				},
 			},
 		},

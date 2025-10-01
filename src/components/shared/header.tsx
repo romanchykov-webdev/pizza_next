@@ -1,3 +1,5 @@
+"use client";
+
 import { Container } from "@/components/shared/container";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui";
@@ -9,10 +11,11 @@ import React, { JSX } from "react";
 import { CartButton } from "./cart-button";
 
 interface IHeaderProps {
+	hasSearch?: boolean;
 	className?: string;
 }
 
-export const Header: React.FC<IHeaderProps> = ({ className }): JSX.Element => {
+export const Header: React.FC<IHeaderProps> = ({ className, hasSearch = true }): JSX.Element => {
 	return (
 		<header className={cn("border border-b", className)}>
 			{/* Desktop Header */}
@@ -30,9 +33,11 @@ export const Header: React.FC<IHeaderProps> = ({ className }): JSX.Element => {
 				</Link>
 
 				{/*search*/}
-				<div className="mx-10 flex-1">
-					<SearchInput />
-				</div>
+				{hasSearch && (
+					<div className="mx-10 flex-1">
+						<SearchInput />
+					</div>
+				)}
 
 				{/* Правая часть */}
 				<div className="flex items-center gap-3">

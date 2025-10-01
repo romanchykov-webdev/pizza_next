@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<main className="min-h-screen bg-white">
-			<Header />
+			<Header hasSearch />
 			{children}
 			{modal ?? null}
 		</main>

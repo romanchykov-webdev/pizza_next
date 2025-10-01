@@ -5,14 +5,15 @@ import { useIntersection } from "react-use";
 
 import { cn } from "@/lib/utils";
 import { useCategoryStore } from "@/store/category";
+
+import { ProductWithRelations } from "../../../@types/prisma";
 import { ProductCard } from "./product-card";
 import { Title } from "./title";
 
 interface Props {
 	title: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	items: any[];
-	// items: ProductWithRelations[];
+
+	items: ProductWithRelations[];
 	categoryId: number;
 	className?: string;
 }
@@ -50,6 +51,7 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, c
 								name={product.name}
 								imageUrl={product.imageUrl}
 								price={minPrice}
+								ingredients={product.ingredients}
 							/>
 						);
 					})}

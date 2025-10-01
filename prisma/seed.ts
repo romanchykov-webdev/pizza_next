@@ -56,7 +56,8 @@ async function up() {
 		data: products,
 	});
 
-	// Пицца
+	// Пиццы
+	// Пепперони фреш
 	const pizza1 = await prisma.product.create({
 		data: {
 			name: "Пепперони фреш",
@@ -68,6 +69,7 @@ async function up() {
 		},
 	});
 
+	// Сырная
 	const pizza2 = await prisma.product.create({
 		data: {
 			name: "Сырная",
@@ -79,6 +81,7 @@ async function up() {
 		},
 	});
 
+	// Чоризо фреш
 	const pizza3 = await prisma.product.create({
 		data: {
 			name: "Чоризо фреш",
@@ -90,6 +93,7 @@ async function up() {
 		},
 	});
 
+	// Маргарита
 	const pizza4 = await prisma.product.create({
 		data: {
 			name: "Маргарита",
@@ -101,50 +105,55 @@ async function up() {
 		},
 	});
 
+	// Барбекю
 	const pizza5 = await prisma.product.create({
 		data: {
 			name: "Барбекю",
 			imageUrl: "https://media.dodostatic.net/image/r:233x233/0198bf439a007604880d0231be87cd3e.avif",
 			categoryId: 1,
 			ingredients: {
-				connect: _ingredients.slice(20, 25),
+				connect: _ingredients.slice(2, 15),
 			},
 		},
 	});
 
+	// Гавайская
 	const pizza6 = await prisma.product.create({
 		data: {
 			name: "Гавайская",
 			imageUrl: "https://media.dodostatic.net/image/r:233x233/0198bf530345746e98039478001d5108.avif",
 			categoryId: 1,
 			ingredients: {
-				connect: _ingredients.slice(25, 30),
+				connect: _ingredients.slice(5, 12),
 			},
 		},
 	});
 
+	// Ветчина и грибы
 	const pizza7 = await prisma.product.create({
 		data: {
 			name: "Ветчина и грибы",
 			imageUrl: "https://media.dodostatic.net/image/r:233x233/0198c659b357718f9c77ad0dc392dadf.avif",
 			categoryId: 1,
 			ingredients: {
-				connect: _ingredients.slice(30, 35),
+				connect: _ingredients.slice(1, 7),
 			},
 		},
 	});
 
+	// Мясная
 	const pizza8 = await prisma.product.create({
 		data: {
 			name: "Мясная",
 			imageUrl: "https://media.dodostatic.net/image/r:233x233/0198bf3b88d5772695c7f9e557b5b196.avif",
 			categoryId: 1,
 			ingredients: {
-				connect: _ingredients.slice(35, 40),
+				connect: _ingredients.slice(10, 16),
 			},
 		},
 	});
 
+	// Четыре сыра
 	const pizza9 = await prisma.product.create({
 		data: {
 			name: "Четыре сыра",
@@ -156,6 +165,7 @@ async function up() {
 		},
 	});
 
+	// Деревенская
 	const pizza10 = await prisma.product.create({
 		data: {
 			name: "Деревенская",

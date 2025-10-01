@@ -27,19 +27,54 @@ function useSkipFirstRender() {
 }
 
 // 3) Сравнение Set по содержимому
-function setEqual(a: Set<number>, b: Set<number>) {
+function setEqual(a: Set<string>, b: Set<string>) {
 	return a.size === b.size && [...a].every((x) => b.has(x));
 }
 
+// // 4) Сериализация фильтров в query (?a=1&b=2&sizes=20,30)
+// function serializeFiltersToQuery(params: {
+// 	priceFrom: number;
+// 	priceTo: number;
+// 	pizzaTypes: number[];
+// 	sizes: number[];
+// 	ingredients: number[];
+// }) {
+// 	return qs.stringify(params, { arrayFormat: "comma", skipNulls: true, addQueryPrefix: true });
+// }
 // 4) Сериализация фильтров в query (?a=1&b=2&sizes=20,30)
 function serializeFiltersToQuery(params: {
-	priceFrom: number;
-	priceTo: number;
+	priceFrom?: number;
+	priceTo?: number;
 	pizzaTypes: number[];
 	sizes: number[];
 	ingredients: number[];
 }) {
-	return qs.stringify(params, { arrayFormat: "comma", skipNulls: true, addQueryPrefix: true });
+	// Создаем копию параметров для модификации
+	const filteredParams = { ...params };
+
+	// Удаляем параметры цены, если они равны 0 или undefined
+	if (filteredParams.priceFrom === 0 || filteredParams.priceFrom === undefined) {
+		delete filteredParams.priceFrom;
+	}
+
+	if (filteredParams.priceTo === 0 || filteredParams.priceTo === undefined) {
+		delete filteredParams.priceTo;
+	}
+
+	// Добавляем массивы только если они не пустые
+	if (params.pizzaTypes && params.pizzaTypes.length > 0) {
+		filteredParams.pizzaTypes = params.pizzaTypes;
+	}
+
+	if (params.sizes && params.sizes.length > 0) {
+		filteredParams.sizes = params.sizes;
+	}
+
+	if (params.ingredients && params.ingredients.length > 0) {
+		filteredParams.ingredients = params.ingredients;
+	}
+
+	return qs.stringify(filteredParams, { arrayFormat: "comma", skipNulls: true, addQueryPrefix: true });
 }
 
 // 5) Правило выбора push/replace
