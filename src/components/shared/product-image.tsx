@@ -11,7 +11,9 @@ export const ProductImage: React.FC<Props> = ({ imageUrl, className, size }): JS
 	const imgPct = size === 20 ? "60%" : size === 30 ? "70%" : "80%";
 	return (
 		<div
-			className={cn("relative w-full aspect-square mx-auto max-w-[clamp(220px,80vw,520px)]", className)}
+			// className={cn("relative w-full aspect-square mx-auto max-w-[clamp(220px,80vw,520px)]", className)}
+			// style={{ ["--img" as any]: imgPct }} // eslint-disable-line @typescript-eslint/no-explicit-any
+			className={cn("relative aspect-square mx-auto", className)}
 			style={{ ["--img" as any]: imgPct }} // eslint-disable-line @typescript-eslint/no-explicit-any
 		>
 			<img

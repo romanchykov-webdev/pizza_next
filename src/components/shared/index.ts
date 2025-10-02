@@ -16,6 +16,7 @@ export { Ingredient } from "./ingredient";
 export { IngredientsList } from "./Ingredients-list";
 export * from "./modals";
 export { ProductCard } from "./product-card";
+export { ProductFormClient } from "./product-form-client";
 export { ProductImage } from "./product-image";
 export { ProductsGroupList } from "./products-group-list";
 export { SearchInput } from "./search-input";
