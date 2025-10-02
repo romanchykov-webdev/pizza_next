@@ -61,11 +61,11 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 	return (
 		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
 			{/* Левая часть  */}
-			<div className="w-full lg:w-[60%] p-4 sm:p-6 flex justify-center items-center ">
+			<div className="w-full lg:w-[60%] h-auto min-h-[250px] sm:min-h-[300px] md:min-h-[400px] p-4 sm:p-6 flex justify-center items-center">
 				<ProductImage
 					imageUrl={imageUrl}
 					size={size}
-					className="md:[95%] md:h-[400px] lg:w-[400px] lg:h-auto object-contain flex-shrink-0"
+					className="w-full h-auto max-h-[250px] sm:max-h-[300px] md:max-h-[400px] object-contain"
 				/>
 			</div>
 
@@ -105,7 +105,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 					onClick={handleClickAdd}
 					className="h-[55px] px-10 text-base rounded-[18px] w-full sticky bottom-0"
 				>
-					Добавить в корзину за {totalPrice} ₽
+					Добавить в корзину за {totalPrice} zł
 				</Button>
 			</div>
 		</div>
