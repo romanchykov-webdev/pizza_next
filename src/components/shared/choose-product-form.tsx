@@ -25,16 +25,18 @@ interface Props {
 
 export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, onSubmit, className, price, loading }) => {
 	return (
-		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
-			<div className="flex items-center justify-center flex-1 relative lg:w-[50%] w-full h-[400px] p-4 md:p-0 ">
+		<div className={cn(className, "flex flex-col justify-between lg:flex-row flex-1 max-h-[90vh] overflow-auto ")}>
+			{/* Левая часть  */}
+			<div className="w-full lg:w-[60%] h-auto min-h-[250px] sm:min-h-[300px] md:min-h-[400px] p-4 sm:p-6 flex flex-1 justify-center items-center">
 				<img
 					src={imageUrl}
 					alt={name}
-					className="relative md:left-2 md:top-2 transition-all z-10 duration-300 w-[200px] h-[200px] md:w-[300px] md:h-[300px] object-contain"
+					className="w-full h-auto max-h-[250px] sm:max-h-[300px] md:max-h-[400px] object-contain"
 				/>
 			</div>
 
-			<div className="bg-gray-50 px-2 py-5 rounded-md mb-3 h-auto overflow-auto lg:w-[50%] w-full">
+			{/* Правая часть - нижняя часть */}
+			<div className="bg-[#FCFCFC] p-4 lg:p-7 w-full lg:w-[40%] flex flex-col justify-between">
 				<Title text={name} size="md" className="font-extrabold mb-1 text-center" />
 
 				<Button
@@ -42,7 +44,7 @@ export const ChooseProductForm: React.FC<Props> = ({ name, imageUrl, onSubmit, c
 					loading={loading}
 					className="h-[55px] px-10 text-base rounded-[18px] w-full mt-5"
 				>
-					Добавить в корзину за {price} ₽
+					Добавить в корзину за {price} zł
 				</Button>
 			</div>
 		</div>
