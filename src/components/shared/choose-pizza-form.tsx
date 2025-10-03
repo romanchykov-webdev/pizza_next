@@ -42,9 +42,14 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 
 	const { textDetails, totalPrice } = getPizzaDetails(type, size, items, ingredients, selectedIngredients);
 
+	console.log("ChoosePizzaForm currentItemId", currentItemId);
+	console.log("ChoosePizzaForm selectedIngredients", selectedIngredients);
+
 	const handleClickAdd = async () => {
 		//
 		if (currentItemId) {
+			console.log("handleClickAdd currentItemId", currentItemId);
+			console.log("handleClickAdd selectedIngredients", selectedIngredients);
 			onSubmit(currentItemId, Array.from(selectedIngredients));
 		}
 		// console.log({ size, type, ingredients, selectedIngredients });
@@ -56,7 +61,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 		//   console.error(error);
 		// }
 	};
-	console.log({ ingredients });
+	// console.log({ ingredients });
 
 	return (
 		<div className={cn(className, "flex flex-col lg:flex-row flex-1 max-h-[90vh] overflow-auto")}>
