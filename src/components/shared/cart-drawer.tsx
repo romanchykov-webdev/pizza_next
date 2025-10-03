@@ -12,6 +12,9 @@ import Link from "next/link";
 import { Button } from "../ui";
 import { CartDriwerItem } from "./cart-driwer-item";
 
+import EmptyCartSvg from "@/assets/basket-empty.svg";
+import Image from "next/image";
+
 interface ICartDrawerProps {
 	className?: string;
 }
@@ -40,6 +43,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 	};
 
 	// console.log("loading", loading);
+	console.log("items", items);
 
 	return (
 		<Sheet>
@@ -52,28 +56,36 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 				</SheetHeader>
 
 				<div className="flex flex-1 h-full flex-col overflow-auto scrollbar gap-2 ">
-					{items.map((item) => (
-						<CartDriwerItem
-							key={item.id}
-							loading={loading}
-							id={item.id}
-							imageUrl={item.imageUrl}
-							details={
-								item.pizzaType && item.pizzaSize
-									? getCartItemDetails(
-											item.ingredients,
-											item.pizzaType as PizzaType,
-											item.pizzaSize as PizzaSize,
-										)
-									: ""
-							}
-							name={item.name}
-							price={item.price}
-							quantity={item.quantity}
-							onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
-							onClickRemove={() => removeCartItem(item.id)}
-						/>
-					))}
+					{/* <div className="flex flex-col overflow-auto scrollbar gap-2 max-h-[calc(100vh-200px)]"> */}
+					{items.length > 0 ? (
+						items.map((item) => (
+							<CartDriwerItem
+								key={item.id}
+								loading={loading}
+								id={item.id}
+								imageUrl={item.imageUrl}
+								details={
+									item.pizzaType && item.pizzaSize
+										? getCartItemDetails(
+												item.ingredients,
+												item.pizzaType as PizzaType,
+												item.pizzaSize as PizzaSize,
+											)
+										: ""
+								}
+								name={item.name}
+								price={item.price}
+								quantity={item.quantity}
+								onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+								onClickRemove={() => removeCartItem(item.id)}
+							/>
+						))
+					) : (
+						<div className="flex flex-1 flex-col items-center justify-center min-h-[300px]">
+							<Image src={EmptyCartSvg} alt="Пустая корзина" width={300} height={300} />
+							<p className="mt-4 text-gray-500 text-center">Ваша корзина пуста</p>
+						</div>
+					)}
 				</div>
 
 				<SheetFooter className="bg-white p-4 sm:p-8 mt-auto sticky bottom-0 left-0 right-0">
@@ -87,11 +99,12 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 							<span className="font-bold text-lg">{totalAmount} zł</span>
 						</div>
 
-						<Link href="/cart">
+						<Link href="/cart" className="w-full">
 							<Button
 								// onClick={() => setRedirecting(true)}
 								// loading={loading || redirecting}
 								loading={loading}
+								disabled={items.length === 0}
 								type="submit"
 								className="w-full h-12 text-base"
 							>

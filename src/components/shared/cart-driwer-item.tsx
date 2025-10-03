@@ -24,15 +24,23 @@ export const CartDriwerItem: React.FC<ICartDriwerItemProps> = ({
 	onClickRemove,
 }): JSX.Element => {
 	return (
-		<div className={cn("flex bg-white p-5 gap-6 rounded-lg relative overflow-hidden", className)}>
+		<div
+			className={cn(
+				"flex bg-white p-5 gap-6 rounded-lg relative overflow-hidden min-h-[140px] flex-shrink-0",
+				className,
+			)}
+		>
 			{loading && (
-				<div className="absolute top-0 right-0 bg-gray-500 w-full h-full opacity-50 z-10 flex items-center justify-center">
+				<div
+					className="absolute top-0 right-0 bg-gray-500 w-full h-full opacity-50 z-10 flex 
+				items-center justify-center"
+				>
 					<Loader2 className="text-yellow-500 animate-spin" size={50} />
 				</div>
 			)}
-			<CartItem.Image src={imageUrl} className="w-[60px] h-[60px] rounded-md" />
+			<CartItem.Image src={imageUrl} className="w-[60px] h-[60px] rounded-md flex-shrink-0" />
 
-			<div className="flex-1">
+			<div className="flex-1 min-w-0">
 				<CartItem.Info name={name} details={details} />
 
 				<hr className="my-3" />
@@ -45,7 +53,7 @@ export const CartDriwerItem: React.FC<ICartDriwerItemProps> = ({
 
 						<Trash2Icon
 							onClick={onClickRemove}
-							className="text-gray-400 cursor-pointer hover:text-red-600 "
+							className="text-gray-400 cursor-pointer hover:text-red-600 flex-shrink-0"
 							size={16}
 						/>
 					</div>
