@@ -2,7 +2,6 @@ import { updateCartTotalAmount } from "@/lib/update-cart-total-amount";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma/prisma-client";
 
-// export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
 export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
 		// console.time("PATCH_CART_TOTAL");
