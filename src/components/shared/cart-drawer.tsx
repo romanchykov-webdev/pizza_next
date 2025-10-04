@@ -2,12 +2,20 @@
 
 import React, { JSX, useEffect } from "react";
 
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetFooter,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
 
 import { PizzaSize, PizzaType } from "@/constants/pizza";
 import { getCartItemDetails } from "@/lib";
 import { useCartStore } from "@/store";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui";
 import { CartDriwerItem } from "./cart-driwer-item";
@@ -85,9 +93,16 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 							/>
 						))
 					) : (
-						<div className="flex flex-1 flex-col items-center justify-center min-h-[300px]">
+						<div className="flex flex-1 flex-col p-4 items-center justify-center min-h-[300px]">
 							<Image src={EmptyCartSvg} alt="Пустая корзина" width={300} height={300} />
-							<p className="mt-4 text-gray-500 text-center">Ваша корзина пуста</p>
+							<p className="mt-4 text-gray-500 text-center mb-10">Ваша корзина пуста</p>
+
+							<SheetClose asChild>
+								<Button className="w-full h-12 text-base">
+									<ArrowLeft className="w-5 mr-5" />
+									Вернуться назад
+								</Button>
+							</SheetClose>
 						</div>
 					)}
 				</div>
