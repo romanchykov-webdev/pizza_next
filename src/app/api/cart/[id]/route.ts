@@ -62,7 +62,6 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 	}
 }
 
-// export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
 		// const id = Number(params.id);

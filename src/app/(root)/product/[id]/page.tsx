@@ -45,6 +45,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 	if (!product) {
 		return notFound();
 	}
+	console.log("ProductPage", JSON.stringify(product, null));
 
 	return (
 		<Container className="flex flex-col my-30 ">
@@ -55,6 +56,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 			>
 				<ReplyIcon size={20} />
 			</Link>
+
 			<ProductFormClient product={product} />
 		</Container>
 	);
