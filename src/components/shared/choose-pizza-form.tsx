@@ -42,14 +42,14 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 
 	const { textDetails, totalPrice } = getPizzaDetails(type, size, items, ingredients, selectedIngredients);
 
-	console.log("ChoosePizzaForm currentItemId", currentItemId);
-	console.log("ChoosePizzaForm selectedIngredients", selectedIngredients);
+	// console.log("ChoosePizzaForm currentItemId", currentItemId);
+	// console.log("ChoosePizzaForm selectedIngredients", selectedIngredients);
 
 	const handleClickAdd = async () => {
 		//
 		if (currentItemId) {
-			console.log("handleClickAdd currentItemId", currentItemId);
-			console.log("handleClickAdd selectedIngredients", selectedIngredients);
+			// console.log("handleClickAdd currentItemId", currentItemId);
+			// console.log("handleClickAdd selectedIngredients", selectedIngredients);
 			onSubmit(currentItemId, Array.from(selectedIngredients));
 		}
 		// console.log({ size, type, ingredients, selectedIngredients });
@@ -78,7 +78,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 			<div className="w-full lg:w-[490px] bg-[#FCFCFC] p-4 lg:p-7 overflow-auto ">
 				<Title text={name} size="md" className="font-extrabold mb-1" />
 
-				<p className="text-gray-400">{textDetails}</p>
+				<p className="text-gray-400" dangerouslySetInnerHTML={{ __html: textDetails }} />
 
 				<div className=" flex flex-col ga-4 mt-5">
 					<GroupVariants
