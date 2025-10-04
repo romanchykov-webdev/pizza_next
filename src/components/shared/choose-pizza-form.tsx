@@ -78,7 +78,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 			<div className="w-full lg:w-[490px] bg-[#FCFCFC] p-4 lg:p-7 overflow-auto ">
 				<Title text={name} size="md" className="font-extrabold mb-1" />
 
-				<p className="text-gray-400">{textDetails}</p>
+				<p className="text-gray-400" dangerouslySetInnerHTML={{ __html: textDetails }} />
 
 				<div className=" flex flex-col ga-4 mt-5">
 					<GroupVariants

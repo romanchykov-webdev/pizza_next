@@ -42,6 +42,7 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, c
 				{items
 					.filter((product) => product.items.length > 0)
 					.map((product) => {
+						// console.log("ProductsGroupList", JSON.stringify(product, null));
 						// Находим минимальную цену из всех вариантов
 						const minPrice = Math.min(...product.items.map((item) => item.price));
 						return (
