@@ -51,7 +51,11 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 			<SheetContent side="right" className="flex flex-col justify-between pb-0 bg-[#F4F1EE] sm:max-w-md w-full ">
 				<SheetHeader>
 					<SheetTitle>
-						В корзине <span className="font-bold">{items.length} товаров</span>
+						{items.length > 0 && (
+							<span>
+								В корзине <span className="font-bold">{items.length} товаров</span>
+							</span>
+						)}
 					</SheetTitle>
 				</SheetHeader>
 
@@ -88,32 +92,34 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 					)}
 				</div>
 
-				<SheetFooter className="bg-white p-4 sm:p-8 mt-auto sticky bottom-0 left-0 right-0">
-					<div className="w-full">
-						<div className="flex mb-4">
-							<span className="flex flex-1 text-lg text-neutral-500">
-								Итого
-								<div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
-							</span>
+				{items.length > 0 && (
+					<SheetFooter className="bg-white p-4 sm:p-8 mt-auto sticky bottom-0 left-0 right-0">
+						<div className="w-full">
+							<div className="flex mb-4">
+								<span className="flex flex-1 text-lg text-neutral-500">
+									Итого
+									<div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
+								</span>
 
-							<span className="font-bold text-lg">{totalAmount} zł</span>
+								<span className="font-bold text-lg">{totalAmount} zł</span>
+							</div>
+
+							<Link href="/cart" className="w-full">
+								<Button
+									// onClick={() => setRedirecting(true)}
+									// loading={loading || redirecting}
+									loading={loading}
+									disabled={items.length === 0}
+									type="submit"
+									className="w-full h-12 text-base"
+								>
+									Оформить заказ
+									<ArrowRight className="w-5 ml-2" />
+								</Button>
+							</Link>
 						</div>
-
-						<Link href="/cart" className="w-full">
-							<Button
-								// onClick={() => setRedirecting(true)}
-								// loading={loading || redirecting}
-								loading={loading}
-								disabled={items.length === 0}
-								type="submit"
-								className="w-full h-12 text-base"
-							>
-								Оформить заказ
-								<ArrowRight className="w-5 ml-2" />
-							</Button>
-						</Link>
-					</div>
-				</SheetFooter>
+					</SheetFooter>
+				)}
 			</SheetContent>
 		</Sheet>
 	);
