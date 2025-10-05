@@ -38,7 +38,7 @@ export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, c
 		<div className={className} id={title} ref={intersectionRef} style={{ scrollMarginTop: "120px" }}>
 			<Title text={title} size="lg" className="font-extrabold mb-5" />
 
-			<div className={cn("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4")}>
+			<div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4")}>
 				{items
 					.filter((product) => product.items.length > 0)
 					.map((product) => {

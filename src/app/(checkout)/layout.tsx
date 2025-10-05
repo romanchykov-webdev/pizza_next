@@ -9,10 +9,8 @@ export const metadata: Metadata = {
 export default function DashBoardLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<main className="min-h-screen bg-[#F4F1EE]">
-			<Container>
-				<Header className="border-b border-gray-200" hasSearch={false} hasCart={false} />
-				{children}
-			</Container>
+			<Header className="border-b border-gray-200" hasSearch={false} hasCart={false} />
+			<Container>{children}</Container>
 		</main>
 	);
 }

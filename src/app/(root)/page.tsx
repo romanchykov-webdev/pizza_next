@@ -23,7 +23,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
 
 	const categories = await findPizzas(sp);
 
-	console.log({ categories });
+	// console.log({ categories });
 	//
 	return (
 		<>

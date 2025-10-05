@@ -51,7 +51,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 	};
 
 	// console.log("loading", loading);
-	console.log("items", items);
+	// console.log("items", items);
 
 	return (
 		<Sheet>
