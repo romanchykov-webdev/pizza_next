@@ -1,6 +1,6 @@
 "use client";
 
-import React, { JSX, useEffect } from "react";
+import React, { JSX, useState } from "react";
 
 import {
 	Sheet,
@@ -14,44 +14,20 @@ import {
 
 import { PizzaSize, PizzaType } from "@/constants/pizza";
 import { getCartItemDetails } from "@/lib";
-import { useCartStore } from "@/store";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui";
 import { CartDriwerItem } from "./cart-driwer-item";
 
 import EmptyCartSvg from "@/assets/basket-empty.svg";
+import { useCart } from "@/hooks";
 import Image from "next/image";
 
-interface ICartDrawerProps {
-	className?: string;
-}
+export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => {
+	//
+	const { totalAmount, items, loading, removeCartItem, changeItemCount } = useCart();
 
-export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = ({ children }): JSX.Element => {
-	// const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
-	// 	state.totalAmount,
-	// 	state.fetchCartItems,
-	// 	state.items,
-	// ]);
-	const totalAmount = useCartStore((state) => state.totalAmount);
-	const fetchCartItems = useCartStore((state) => state.fetchCartItems);
-	const items = useCartStore((state) => state.items);
-	const updateItemQuantity = useCartStore((state) => state.updateItemQuantity);
-	const loading = useCartStore((state) => state.loading);
-	const removeCartItem = useCartStore((state) => state.removeCartItem);
-
-	useEffect(() => {
-		fetchCartItems();
-	}, [fetchCartItems]);
-
-	const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
-		// console.log(id, quantity, type);
-		const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
-		updateItemQuantity(id, newQuantity);
-	};
-
-	// console.log("loading", loading);
-	// console.log("items", items);
+	const [redirecting, setRedirecting] = useState(false);
 
 	return (
 		<Sheet>
@@ -76,19 +52,16 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 								loading={loading}
 								id={item.id}
 								imageUrl={item.imageUrl}
-								details={
-									item.pizzaType && item.pizzaSize
-										? getCartItemDetails(
-												item.ingredients,
-												item.pizzaType as PizzaType,
-												item.pizzaSize as PizzaSize,
-											)
-										: ""
-								}
+								details={getCartItemDetails(
+									item.ingredients,
+									item.pizzaType as PizzaType,
+									item.pizzaSize as PizzaSize,
+								)}
 								name={item.name}
 								price={item.price}
 								quantity={item.quantity}
-								onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+								// onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+								onClickCountButton={(type) => changeItemCount(item.id, item.quantity, type)}
 								onClickRemove={() => removeCartItem(item.id)}
 							/>
 						))
@@ -119,12 +92,11 @@ export const CartDrawer: React.FC<React.PropsWithChildren<ICartDrawerProps>> = (
 								<span className="font-bold text-lg">{totalAmount} zł</span>
 							</div>
 
-							<Link href="/cart" className="w-full">
+							<Link href="/checkout" className="w-full">
 								<Button
-									// onClick={() => setRedirecting(true)}
-									// loading={loading || redirecting}
-									loading={loading}
-									disabled={items.length === 0}
+									onClick={() => setRedirecting(true)}
+									loading={loading || redirecting}
+									// disabled={items.length === 0}
 									type="submit"
 									className="w-full h-12 text-base"
 								>

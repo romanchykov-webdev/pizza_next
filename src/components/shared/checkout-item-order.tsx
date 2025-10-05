@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
+import { Loader2, Trash2Icon } from "lucide-react";
 import React, { JSX } from "react";
 import * as CartItemDetails from "./cart-item-details";
 import { CartItemProps } from "./cart-item-details/cart-item-details.types";
@@ -12,6 +12,7 @@ interface Props extends CartItemProps {
 	imageUrl: string;
 	details: string;
 	quantity: number;
+	loading?: boolean;
 	className?: string;
 	onClickRemove: () => void;
 	onClickCountButton: CountButtonProps["onClick"];
@@ -23,27 +24,42 @@ export const CheckoutItemOrder: React.FC<Props> = ({
 	imageUrl,
 	details,
 	quantity,
+	loading,
 	className,
 	onClickRemove,
 	onClickCountButton,
 }): JSX.Element => {
 	return (
 		<div
-			className={cn("flex flex-col lg:flex-row items-center justify-between shadow-md rounded-lg p-5", className)}
+			className={cn(
+				"flex flex-col items-center justify-between lg:flex-row lg:justify-center lg:items-center shadow-md rounded-lg overflow-hidden min-h-[140px] p-5 relative ",
+				className,
+			)}
 		>
-			<div className="flex items-center gap-5 flex-1 mr-10">
+			{loading && (
+				<div
+					className="absolute top-0 right-0 bg-gray-500 w-full h-full opacity-50 z-10 flex 
+				items-center justify-center"
+				>
+					<Loader2 className="text-yellow-500 animate-spin" size={50} />
+				</div>
+			)}
+			<div className="flex items-center gap-5 flex-1 lg:mr-10  w-full lg:w-auto ">
 				<CartItemDetails.Image src={imageUrl} />
 				<CartItemDetails.Info name={name} details={details} />
 			</div>
 
-			<div className="flex mt-10 lg:mt-0 items-center gap-5 justify-between ">
+			<div className="flex mt-10 lg:mt-0 lg:w-auto items-center gap-5 justify-between  w-full ">
 				<CartItemDetails.Price value={price} />
 
-				<div className="flex items-center gap-5 ml-20">
+				<div className="flex items-center  gap-3 ml-20">
 					<CartItemDetails.CountButton onClick={onClickCountButton} value={quantity} />
-					<button onClick={onClickRemove}>
-						<X className="text-gray-400 cursor-pointer hover:text-gray-600" size={20} />
-					</button>
+
+					<Trash2Icon
+						onClick={onClickRemove}
+						className="text-gray-400 cursor-pointer hover:text-red-600 flex-shrink-0"
+						size={24}
+					/>
 				</div>
 			</div>
 		</div>
