@@ -57,7 +57,7 @@ export default function CheckoutPage() {
 						{/* right block - subblock */}
 						<div className="flex flex-col gap-10 flex-1 lg:col-span-1 sm:col-span-2 ">
 							{/*  */}
-							<CheckoutSidebar totalAmount={totalAmount} />
+							<CheckoutSidebar totalAmount={totalAmount} loading={loading} />
 							{/*  */}
 						</div>
 					</div>
