@@ -45,7 +45,7 @@ export const CheckoutSidebar: React.FC<ICheckoutSidebarProps> = ({ className, to
 			{/* <span className="text-xl cursor-pointer">У вас есть промокод?</span> */}
 
 			{/* upload block */}
-			<Button type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+			<Button loading={loading} type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
 				Перейти к оплате
 				<ArrowRightIcon className="w-5 ml-2" />
 			</Button>
