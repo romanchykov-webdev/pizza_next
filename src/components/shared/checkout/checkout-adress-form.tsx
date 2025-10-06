@@ -1,8 +1,9 @@
-import React, { JSX } from "react";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
+import React, { JSX } from "react";
+
+import { FormInput } from "../form/form-input";
+import { FormTextarea } from "../form/form-textarea";
 import { WhiteBlock } from "../white-block";
-import { Input } from "@/components/ui/input";
 
 interface ICheckoutAdressFormProps {
 	className?: string;
@@ -12,8 +13,9 @@ export const CheckoutAdressForm: React.FC<ICheckoutAdressFormProps> = ({ classNa
 	return (
 		<WhiteBlock title="3. Адрес и комментарий" contentClassName={cn("", className)}>
 			<div className="flex flex-col gap-5">
-				<Input name="address" className="text-base " placeholder="Адрес" />
-				<Textarea rows={5} name="comment" placeholder="Комментарий к заказу" />
+				<FormInput name="address" className="text-base " placeholder="Адрес" label="Адрес" required />
+
+				<FormTextarea rows={5} name="comment" placeholder="Комментарий к заказу" />
 			</div>
 		</WhiteBlock>
 	);

@@ -33,7 +33,9 @@ export default function CheckoutPage() {
 			<Title text="Оформление заказа" size="xl" className="mb-8" />
 
 			<FormProvider {...form}>
+				{/*  */}
 				<form onSubmit={form.handleSubmit(onSubmit)}>
+					{/*  */}
 					<div className=" grid grid-cols-1 lg:grid-cols-3 gap-10  ">
 						{/* left block - top block */}
 						<div className="flex flex-col gap-10 flex-1 lg:col-span-2 sm:col-span-2 ">
@@ -54,7 +56,9 @@ export default function CheckoutPage() {
 
 						{/* right block - subblock */}
 						<div className="flex flex-col gap-10 flex-1 lg:col-span-1 sm:col-span-2 ">
+							{/*  */}
 							<CheckoutSidebar totalAmount={totalAmount} />
+							{/*  */}
 						</div>
 					</div>
 				</form>

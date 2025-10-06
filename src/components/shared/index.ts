@@ -19,6 +19,8 @@ export { FilterCheckbox } from "./filter-checkbox";
 export { FilterDrawer } from "./filter-drawer";
 export { Filters } from "./filters";
 export { FormInput } from "./form/form-input";
+export { FormInputPhone } from "./form/form-input-phone";
+export { FormTextarea } from "./form/form-textarea";
 export { GroupVariants } from "./group-variants";
 export { Header } from "./header";
 export { Ingredient } from "./ingredient";
