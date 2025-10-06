@@ -18,6 +18,7 @@ export { ErrorText } from "./error-text";
 export { FilterCheckbox } from "./filter-checkbox";
 export { FilterDrawer } from "./filter-drawer";
 export { Filters } from "./filters";
+export { FormAddressAutocomplete } from "./form/form-address-autocomplete";
 export { FormInput } from "./form/form-input";
 export { FormInputPhone } from "./form/form-input-phone";
 export { FormTextarea } from "./form/form-textarea";

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import React, { JSX } from "react";
 
-import { FormInput } from "../form/form-input";
+import { FormAddressAutocomplete } from "../form/form-address-autocomplete";
 import { FormTextarea } from "../form/form-textarea";
 import { WhiteBlock } from "../white-block";
 
@@ -13,7 +13,13 @@ export const CheckoutAdressForm: React.FC<ICheckoutAdressFormProps> = ({ classNa
 	return (
 		<WhiteBlock title="3. Адрес и комментарий" contentClassName={cn("", className)}>
 			<div className="flex flex-col gap-5">
-				<FormInput name="address" className="text-base " placeholder="Адрес" label="Адрес" required />
+				<FormAddressAutocomplete
+					name="address"
+					className="text-base "
+					placeholder="Адрес"
+					label="Адрес"
+					required
+				/>
 
 				<FormTextarea rows={5} name="comment" placeholder="Комментарий к заказу" />
 			</div>
