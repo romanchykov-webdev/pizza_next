@@ -24,27 +24,29 @@ export const CheckoutCart: React.FC<ICheckoutCartProps> = ({
 }): JSX.Element => {
 	return (
 		<WhiteBlock title="1. Корзина" contentClassName={cn("flex flex-col gap-5")} className={className}>
-			{items.length > 0 ? (
-				items.map((item) => (
-					<CheckoutItemOrder
-						key={item.id}
-						name={item.name}
-						loading={loading}
-						price={item.price}
-						imageUrl={item.imageUrl}
-						details={getCartItemDetails(
-							item.ingredients,
-							item.pizzaType as PizzaType,
-							item.pizzaSize as PizzaSize,
-						)}
-						quantity={item.quantity}
-						id={item.id}
-						onClickCountButton={(type) => changeItemCount(item.id, item.quantity, type)}
-						onClickRemove={() => removeCartItem(item.id)}
-					/>
-				))
+			{loading ? (
+				[...Array(4)].map((_, index) => <CheckoutItemSkeleton key={index} />)
 			) : (
-				<CheckoutItemSkeleton />
+				<>
+					{items.map((item) => (
+						<CheckoutItemOrder
+							key={item.id}
+							name={item.name}
+							loading={loading}
+							price={item.price}
+							imageUrl={item.imageUrl}
+							details={getCartItemDetails(
+								item.ingredients,
+								item.pizzaType as PizzaType,
+								item.pizzaSize as PizzaSize,
+							)}
+							quantity={item.quantity}
+							id={item.id}
+							onClickCountButton={(type) => changeItemCount(item.id, item.quantity, type)}
+							onClickRemove={() => removeCartItem(item.id)}
+						/>
+					))}
+				</>
 			)}
 		</WhiteBlock>
 	);

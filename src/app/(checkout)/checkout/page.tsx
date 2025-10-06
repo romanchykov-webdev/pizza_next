@@ -45,14 +45,14 @@ export default function CheckoutPage() {
 								loading={loading}
 								removeCartItem={removeCartItem}
 								changeItemCount={changeItemCount}
-								className={`${loading ? "opacity-40 pointer-events-none" : ""}`}
+								className={`${loading && "opacity-40 pointer-events-none"}`}
 							/>
 
 							{/*  */}
-							<CheckoutPersanalInfo className={`${loading ? "opacity-40 pointer-events-none" : ""}`} />
+							<CheckoutPersanalInfo className={`${loading && "opacity-40 pointer-events-none"}`} />
 
 							{/* */}
-							<CheckoutAdressForm className={`${loading ? "opacity-40 pointer-events-none" : ""}`} />
+							<CheckoutAdressForm className={`${loading && "opacity-40 pointer-events-none"}`} />
 						</div>
 
 						{/* right block - subblock */}
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
 							<CheckoutSidebar
 								totalAmount={totalAmount}
 								loading={loading}
-								className={`${loading ? "opacity-40 pointer-events-none" : ""}`}
+								className={`${loading && "opacity-40 pointer-events-none"}`}
 							/>
 							{/*  */}
 						</div>
