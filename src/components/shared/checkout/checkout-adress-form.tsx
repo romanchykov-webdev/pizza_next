@@ -11,7 +11,7 @@ interface ICheckoutAdressFormProps {
 
 export const CheckoutAdressForm: React.FC<ICheckoutAdressFormProps> = ({ className }): JSX.Element => {
 	return (
-		<WhiteBlock title="3. Адрес и комментарий" contentClassName={cn("", className)}>
+		<WhiteBlock title="3. Адрес и комментарий" contentClassName={cn("", className)} className={className}>
 			<div className="flex flex-col gap-5">
 				<FormAddressAutocomplete
 					name="address"

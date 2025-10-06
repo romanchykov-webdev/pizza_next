@@ -10,7 +10,7 @@ interface ICheckoutPersanalInfoProps {
 
 export const CheckoutPersanalInfo: React.FC<ICheckoutPersanalInfoProps> = ({ className }): JSX.Element => {
 	return (
-		<WhiteBlock title="2. Персональные данные" contentClassName={cn("", className)}>
+		<WhiteBlock title="2. Персональные данные" contentClassName={cn("", className)} className={className}>
 			{/*  */}
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 				{/*  */}

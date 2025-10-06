@@ -28,13 +28,13 @@ export const CheckoutItemDetails: React.FC<ICheckoutItemDetailsProps> = ({
 				</div>
 
 				<span className={cn("text-xl font-extrabold", priceClassName)}>
-					{!loading ? (
+					{loading ? (
+						<Loader2 className="text-yellow-500 animate-spin" size={20} />
+					) : (
 						<>
 							{value}
 							{"\u00A0"}zł
 						</>
-					) : (
-						<Loader2 className="text-yellow-500 animate-spin" size={20} />
 					)}
 				</span>
 			</div>

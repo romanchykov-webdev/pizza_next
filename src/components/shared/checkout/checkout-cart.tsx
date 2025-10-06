@@ -23,7 +23,7 @@ export const CheckoutCart: React.FC<ICheckoutCartProps> = ({
 	className,
 }): JSX.Element => {
 	return (
-		<WhiteBlock title="1. Корзина" contentClassName={cn("flex flex-col gap-5", className)}>
+		<WhiteBlock title="1. Корзина" contentClassName={cn("flex flex-col gap-5")} className={className}>
 			{items.length > 0 ? (
 				items.map((item) => (
 					<CheckoutItemOrder

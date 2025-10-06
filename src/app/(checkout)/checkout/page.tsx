@@ -45,19 +45,24 @@ export default function CheckoutPage() {
 								loading={loading}
 								removeCartItem={removeCartItem}
 								changeItemCount={changeItemCount}
+								className={`${loading ? "opacity-40 pointer-events-none" : ""}`}
 							/>
 
 							{/*  */}
-							<CheckoutPersanalInfo />
+							<CheckoutPersanalInfo className={`${loading ? "opacity-40 pointer-events-none" : ""}`} />
 
 							{/* */}
-							<CheckoutAdressForm />
+							<CheckoutAdressForm className={`${loading ? "opacity-40 pointer-events-none" : ""}`} />
 						</div>
 
 						{/* right block - subblock */}
 						<div className="flex flex-col gap-10 flex-1 lg:col-span-1 sm:col-span-2 ">
 							{/*  */}
-							<CheckoutSidebar totalAmount={totalAmount} loading={loading} />
+							<CheckoutSidebar
+								totalAmount={totalAmount}
+								loading={loading}
+								className={`${loading ? "opacity-40 pointer-events-none" : ""}`}
+							/>
 							{/*  */}
 						</div>
 					</div>
