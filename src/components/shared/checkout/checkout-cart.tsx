@@ -24,11 +24,8 @@ export const CheckoutCart: React.FC<ICheckoutCartProps> = ({
 }): JSX.Element => {
 	return (
 		<WhiteBlock title="1. Корзина" contentClassName={cn("flex flex-col gap-5")} className={className}>
-			{loading ? (
-				[...Array(4)].map((_, index) => <CheckoutItemSkeleton key={index} />)
-			) : (
-				<>
-					{items.map((item) => (
+			{items.length > 0
+				? items.map((item) => (
 						<CheckoutItemOrder
 							key={item.id}
 							name={item.name}
@@ -45,9 +42,8 @@ export const CheckoutCart: React.FC<ICheckoutCartProps> = ({
 							onClickCountButton={(type) => changeItemCount(item.id, item.quantity, type)}
 							onClickRemove={() => removeCartItem(item.id)}
 						/>
-					))}
-				</>
-			)}
+					))
+				: [...Array(3)].map((_, index) => <CheckoutItemSkeleton key={index} />)}
 		</WhiteBlock>
 	);
 };

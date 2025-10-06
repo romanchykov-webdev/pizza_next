@@ -1,9 +1,10 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Loader2, Trash2Icon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React, { JSX } from "react";
 import * as CartItemDetails from "./cart-item-details";
 import { CartItemProps } from "./cart-item-details/cart-item-details.types";
+import { ClearButton } from "./clear-button";
 import { CountButtonProps } from "./count-button";
 
 interface Props extends CartItemProps {
@@ -55,11 +56,15 @@ export const CheckoutItemOrder: React.FC<Props> = ({
 				<div className="flex items-center  gap-3 ml-20">
 					<CartItemDetails.CountButton onClick={onClickCountButton} value={quantity} />
 
-					<Trash2Icon
-						onClick={onClickRemove}
-						className="text-gray-400 cursor-pointer hover:text-red-600 flex-shrink-0"
-						size={24}
-					/>
+					{/*  */}
+					<ClearButton onClick={onClickRemove} className="relative  right-0 top-0 -translate-y-0" />
+					{/* <button type="button" onClick={onClickRemove}>
+						<Trash2Icon
+							// onClick={onClickRemove}
+							className="text-gray-400 cursor-pointer hover:text-red-600 flex-shrink-0"
+							size={24}
+						/>
+					</button> */}
 				</div>
 			</div>
 		</div>
