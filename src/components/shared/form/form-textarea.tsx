@@ -1,3 +1,4 @@
+"use client";
 import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 import { useFormContext } from "react-hook-form";
