@@ -54,7 +54,7 @@ export const CartDriwerItem: React.FC<ICartDriwerItemProps> = ({
 						<Trash2Icon
 							onClick={onClickRemove}
 							className="text-gray-400 cursor-pointer hover:text-red-600 flex-shrink-0"
-							size={16}
+							size={24}
 						/>
 					</div>
 				</div>
