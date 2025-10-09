@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 	if (!product) {
 		return notFound();
 	}
-	console.log("ProductPage", JSON.stringify(product, null));
+	// console.log("ProductPage", JSON.stringify(product, null));
 
 	return (
 		<Container className="flex flex-col my-30 ">

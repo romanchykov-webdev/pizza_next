@@ -18,12 +18,12 @@ interface Props {
 }
 
 export const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, ingredients, className }) => {
-	// console.log({ name, price });
+	//
 	return (
 		<div className={cn("flex flex-col h-full", className)}>
 			<Link href={`/product/${id}`} className="flex flex-col flex-1 h-full justify-between">
 				<div className="flex justify-center p-6 bg-secondary rounded-lg h-[260px] hover:shadow-md transition-all duration-300 ">
-					<img className="w-[215px] h-[215px]" src={imageUrl} alt={name} />
+					<img className="w-[215px] h-[215px]" src={imageUrl} alt={name + " loading"} />
 				</div>
 				<div className="flex flex-col flex-1 justify-between">
 					<div>
