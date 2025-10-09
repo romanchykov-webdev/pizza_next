@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { useFormContext } from "react-hook-form";
