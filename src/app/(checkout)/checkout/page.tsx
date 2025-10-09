@@ -37,9 +37,14 @@ export default function CheckoutPage() {
 				icon: "✅",
 			});
 
-			if (url) {
-				location.href = url;
+			if (!url) {
+				toast.error("Не удалось создать платёжную сессию. Попробуйте ещё раз.");
+				setSubmitting(false);
+				return;
 			}
+
+			toast.success("Перенаправляем на страницу оплаты…");
+			window.location.href = url;
 		} catch (error) {
 			toast.error("Произошла ошибка при оформлении заказа", {
 				icon: "❌",
@@ -48,8 +53,8 @@ export default function CheckoutPage() {
 			setSubmitting(false);
 		}
 
-		console.log(data);
-		createOrder(data);
+		// console.log(data);
+		// createOrder(data);
 	};
 
 	return (
