@@ -92,7 +92,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX
 								<span className="font-bold text-lg">{totalAmount} zł</span>
 							</div>
 
-							<Link href="/checkout" className="w-full">
+							{/* <Link href="/checkout" className="w-full">
 								<Button
 									onClick={() => setRedirecting(true)}
 									loading={loading || redirecting}
@@ -103,7 +103,19 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX
 									Оформить заказ
 									<ArrowRight className="w-5 ml-2" />
 								</Button>
-							</Link>
+							</Link> */}
+							<SheetClose asChild>
+								<Button
+									asChild
+									onClick={() => setRedirecting(true)}
+									loading={loading || redirecting}
+									className="w-full h-12 text-base"
+								>
+									<Link href="/checkout">
+										Оформить заказ <ArrowRight className="w-5 ml-2" />
+									</Link>
+								</Button>
+							</SheetClose>
 						</div>
 					</SheetFooter>
 				)}
