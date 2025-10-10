@@ -27,9 +27,10 @@ export async function POST(req: Request) {
 	try {
 		event = stripe.webhooks.constructEvent(rawBody, sig, secret);
 		console.log("[WEBHOOK] Event received:", event.type);
-	} catch (err: any) {
-		console.error("[WEBHOOK] Bad signature", err?.message);
-		return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
+	} catch (err) {
+		const error = err as Error;
+		console.error("[WEBHOOK] Bad signature", error.message);
+		return NextResponse.json({ error: `Webhook Error: ${error.message}` }, { status: 400 });
 	}
 
 	try {
@@ -69,142 +70,29 @@ export async function POST(req: Request) {
 
 				break;
 			}
-			// case "checkout.session.completed": {
-			// 	try {
-			// 		console.log("[WEBHOOK] Processing checkout.session.completed");
-			// 		const session = event.data.object as Stripe.Checkout.Session;
-
-			// 		// Логируем полную структуру сессии для отладки
-			// 		console.log(
-			// 			"[WEBHOOK] Full session data:",
-			// 			JSON.stringify(
-			// 				{
-			// 					id: session.id,
-			// 					payment_intent: session.payment_intent,
-			// 					metadata: session.metadata,
-			// 					customer: session.customer,
-			// 					amount_total: session.amount_total,
-			// 				},
-			// 				null,
-			// 				2,
-			// 			),
-			// 		);
-
-			// 		const orderId = Number(session.metadata?.orderId);
-			// 		const cartToken = session.metadata?.cartToken;
-
-			// 		console.log("[WEBHOOK] Extracted data:", {
-			// 			orderId,
-			// 			cartToken,
-			// 			paymentIntent: session.payment_intent,
-			// 		});
-
-			// 		if (!orderId) {
-			// 			console.error("[WEBHOOK] No orderId in metadata");
-			// 			return NextResponse.json({ error: "No orderId in metadata" }, { status: 400 });
-			// 		}
-
-			// 		if (!cartToken) {
-			// 			console.error("[WEBHOOK] No cartToken in metadata");
-			// 			return NextResponse.json({ error: "No cartToken in metadata" }, { status: 400 });
-			// 		}
-
-			// 		try {
-			// 			// Проверяем существование заказа
-			// 			const orderExists = await prisma.order.findUnique({
-			// 				where: { id: orderId },
-			// 				select: { id: true },
-			// 			});
-
-			// 			if (!orderExists) {
-			// 				console.error("[WEBHOOK] Order not found:", orderId);
-			// 				return NextResponse.json({ error: "Order not found" }, { status: 404 });
-			// 			}
-
-			// 			console.log("[WEBHOOK] Order exists, updating status");
-
-			// 			// 1) помечаем заказ оплаченным
-			// 			await prisma.order.update({
-			// 				where: { id: orderId },
-			// 				data: {
-			// 					status: OrderStatus.SUCCEEDED,
-			// 					paymentId: String(session.payment_intent ?? ""),
-			// 				},
-			// 			});
-			// 			console.log("[WEBHOOK] Order updated:", orderId);
-			// 		} catch (err) {
-			// 			console.error("[WEBHOOK] Error updating order:", err);
-			// 			return NextResponse.json({ error: "Error updating order" }, { status: 500 });
-			// 		}
-
-			// 		try {
-			// 			console.log("[WEBHOOK] Finding cart for token:", cartToken);
-			// 			// 2) очищаем корзину по токену
-			// 			const cart = await prisma.cart.findFirst({
-			// 				where: { tokenId: cartToken },
-			// 				select: { id: true },
-			// 			});
-
-			// 			if (!cart) {
-			// 				console.error("[WEBHOOK] Cart not found for token:", cartToken);
-			// 				return NextResponse.json({ error: "Cart not found" }, { status: 404 });
-			// 			}
-
-			// 			console.log("[WEBHOOK] Found cart:", cart.id);
-
-			// 			// Удаляем все товары из корзины
-			// 			console.log("[WEBHOOK] Deleting cart items for cart:", cart.id);
-			// 			const deleteResult = await prisma.cartItem.deleteMany({
-			// 				where: { cartId: cart.id },
-			// 			});
-			// 			console.log("[WEBHOOK] Cart items deleted:", deleteResult.count);
-
-			// 			// Обновляем сумму корзины
-			// 			console.log("[WEBHOOK] Updating cart total amount");
-			// 			await prisma.cart.update({
-			// 				where: { id: cart.id },
-			// 				data: { totalAmount: 0 },
-			// 			});
-			// 			console.log("[WEBHOOK] Cart total amount reset for cart:", cart.id);
-			// 		} catch (err) {
-			// 			console.error("[WEBHOOK] Error clearing cart:", err);
-			// 			return NextResponse.json({ error: "Error clearing cart" }, { status: 500 });
-			// 		}
-			// 	} catch (err) {
-			// 		console.error("[WEBHOOK] Error in checkout.session.completed handler:", err);
-			// 		return NextResponse.json({ error: "Handler error in completed session" }, { status: 500 });
-			// 	}
-			// 	break;
-			// }
-
-			// case "checkout.session.completed": {
-			// 	try {
-			// 		console.log("[WEBHOOK] Processing checkout.session.completed");
-			// 		const session = event.data.object as Stripe.Checkout.Session;
-
-			// 		// Логируем полную структуру сессии для отладки
-			// 		console.log("[WEBHOOK] Full session data:", JSON.stringify(session, null, 2));
-
-			// 		// Просто возвращаем успешный ответ без выполнения операций с БД
-			// 		return NextResponse.json({ received: true });
-			// 	} catch (err) {
-			// 		console.error("[WEBHOOK] Error in checkout.session.completed handler:", err);
-			// 		return NextResponse.json({ error: "Handler error in completed session" }, { status: 500 });
-			// 	}
-			// }
 
 			// Остальной код без изменений...
 			case "checkout.session.async_payment_failed":
 			case "payment_intent.payment_failed": {
 				try {
 					// можно пометить заказ отменённым
-					const anyObj = event.data.object as any;
+					// Для обоих типов событий объект может быть разным, поэтому используем узкие типы
+					const dataObject = event.data.object as
+						| Stripe.PaymentIntent
+						| Stripe.Checkout.Session
+						| Record<string, unknown>;
+
+					const metadata: Record<string, unknown> | null =
+						(dataObject as Stripe.PaymentIntent)?.metadata ??
+						(dataObject as Stripe.Checkout.Session)?.metadata ??
+						null;
+
 					console.log("[WEBHOOK] Payment failed event:", {
 						type: event.type,
-						metadata: anyObj?.metadata,
+						metadata,
 					});
 
-					const orderId = Number(anyObj?.metadata?.orderId); // если метадата есть
+					const orderId = Number((metadata as Record<string, unknown> | null)?.orderId);
 					if (orderId) {
 						await prisma.order.update({
 							where: { id: orderId },
