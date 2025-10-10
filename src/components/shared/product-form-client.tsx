@@ -1,20 +1,18 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store";
 import { useRouter } from "next/navigation";
 import React, { JSX } from "react";
 import toast from "react-hot-toast";
 import { ProductWithRelations } from "../../../@types/prisma";
-import { ChooseProductForm } from "./choose-product-form";
 import { ChoosePizzaForm } from "./choose-pizza-form";
+import { ChooseProductForm } from "./choose-product-form";
 
 interface IProductFormClientProps {
 	product: ProductWithRelations;
-	className?: string;
 }
 
-export const ProductFormClient: React.FC<IProductFormClientProps> = ({ product, className }): JSX.Element => {
+export const ProductFormClient: React.FC<IProductFormClientProps> = ({ product }): JSX.Element => {
 	const router = useRouter();
 
 	const addCartItem = useCartStore((state) => state.addCartItem);

@@ -17,12 +17,10 @@ interface StoryItem {
 }
 
 interface Props {
-	items: StoryItem[];
-	activeIndex: number;
 	className?: string;
 }
 
-export const StoryModal: React.FC<Props> = ({ className, items, activeIndex }) => {
+export const StoryModal: React.FC<Props> = ({ className }) => {
 	return (
 		<div
 			className={cn(
