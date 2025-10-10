@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 //   return NextResponse.json({});
 // }
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
 	// Временная заглушка - возвращаем пустой ответ
-	const res = req;
 	return NextResponse.json({ success: true });
 }
