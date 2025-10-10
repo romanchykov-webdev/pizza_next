@@ -22,13 +22,17 @@ const SuccessContent = () => {
 			toast.success("✅ Оплата прошла успешно!");
 
 			// Получаем cartToken из куки
-			const cookieCartToken = getCookie("cartToken");
-			console.log("Cookie cartToken:", cookieCartToken);
+			getCookie("cartToken");
+			// console.log("Cookie cartToken:", cookieCartToken);
+			const timeout = setTimeout(() => {
+				router.replace("/");
+			}, 50000);
+			return () => clearTimeout(timeout);
 		} else {
 			// Если нет sessionId, перенаправляем на главную через 5 секунд
 			const timeout = setTimeout(() => {
 				router.replace("/");
-			}, 5000);
+			}, 10000);
 			return () => clearTimeout(timeout);
 		}
 	}, [sessionId, router]);
