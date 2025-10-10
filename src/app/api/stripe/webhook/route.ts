@@ -1,8 +1,11 @@
-import { prisma } from "@/../prisma/prisma-client";
 import { stripe } from "@/lib/stripe";
 import { OrderStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { prisma } from "../../../../../prisma/prisma-client";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Жестко закодированный секрет для отладки
 // const WEBHOOK_SECRET = "whsec_73581fc6215e3bc90a9d8b3c6604909d244169efda1eb3297aed9385cd935ce8";
