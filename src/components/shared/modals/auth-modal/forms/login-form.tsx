@@ -1,3 +1,4 @@
+"use client";
 // import React from 'react';
 // import { Title } from '@/components/shared/title';
 // import { Button } from '@/components/ui/button';
