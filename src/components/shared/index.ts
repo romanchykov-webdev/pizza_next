@@ -6,13 +6,10 @@ export { ChoosePizzaForm } from "./choose-pizza-form";
 export { ChooseProductForm } from "./choose-product-form";
 export { Container } from "./container";
 export { CountButton } from "./count-button";
-// export { CountIconButton } from "./count-icon-button";
+
 export { CheckoutItemDetails } from "./checkout-item-details";
 export { CheckoutItemOrder } from "./checkout-item-order";
-export { CheckoutSidebar } from "./checkout-sidebar";
-export { CheckoutAdressForm } from "./checkout/checkout-adress-form";
-export { CheckoutCart } from "./checkout/checkout-cart";
-export { CheckoutPersanalInfo } from "./checkout/checkout-persanal-info";
+
 export { ClearButton } from "./clear-button";
 export { ErrorText } from "./error-text";
 export { FilterCheckbox } from "./filter-checkbox";

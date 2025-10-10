@@ -1,5 +1,5 @@
 "use client";
-import { CheckoutAdressForm, CheckoutCart, CheckoutPersanalInfo, CheckoutSidebar, Title } from "@/components/shared";
+import { Title } from "@/components/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
@@ -9,6 +9,10 @@ import { useCart } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { CheckoutCart } from "@/components/shared/checkout/checkout-cart";
+import { CheckoutPersanalInfo } from "@/components/shared/checkout/checkout-persanal-info";
+import { CheckoutAdressForm } from "@/components/shared/checkout/checkout-adress-form";
+import { CheckoutSidebar } from "@/components/shared/checkout-sidebar";
 
 export default function CheckoutPage() {
 	//
