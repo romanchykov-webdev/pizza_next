@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 // Функция для получения значения куки
 // function getCookie(name: string): string | undefined {
@@ -19,30 +20,30 @@ const SuccessContent = () => {
 	const [secondsLeft, setSecondsLeft] = useState(5);
 	const shownOnceRef = useRef(false);
 
-	// useEffect(() => {
-	// 	if (sessionId) {
-	// 		if (!shownOnceRef.current) {
-	// 			toast.success("✅ Оплата прошла успешно!");
-	// 			shownOnceRef.current = true;
-	// 		}
+	useEffect(() => {
+		if (sessionId) {
+			if (!shownOnceRef.current) {
+				toast.success("✅ Оплата прошла успешно!");
+				shownOnceRef.current = true;
+			}
 
-	// 		const tick = setInterval(() => {
-	// 			setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
-	// 		}, 1000);
+			const tick = setInterval(() => {
+				setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+			}, 1000);
 
-	// 		const toHome = setTimeout(() => {
-	// 			router.replace("/");
-	// 		}, 5000);
+			const toHome = setTimeout(() => {
+				router.replace("/");
+			}, 5000);
 
-	// 		return () => {
-	// 			clearInterval(tick);
-	// 			clearTimeout(toHome);
-	// 		};
-	// 	} else {
-	// 		const toHome = setTimeout(() => router.replace("/"), 3000);
-	// 		return () => clearTimeout(toHome);
-	// 	}
-	// }, [sessionId, router]);
+			return () => {
+				clearInterval(tick);
+				clearTimeout(toHome);
+			};
+		} else {
+			const toHome = setTimeout(() => router.replace("/"), 3000);
+			return () => clearTimeout(toHome);
+		}
+	}, [sessionId, router]);
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
