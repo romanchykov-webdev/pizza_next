@@ -9,9 +9,15 @@ interface ICheckoutSidebarProps {
 	totalAmount: number;
 	loading: boolean;
 	className?: string;
+	onSubmitCash: () => void;
 }
 
-export const CheckoutSidebar: React.FC<ICheckoutSidebarProps> = ({ className, totalAmount, loading }): JSX.Element => {
+export const CheckoutSidebar: React.FC<ICheckoutSidebarProps> = ({
+	className,
+	totalAmount,
+	loading,
+	onSubmitCash,
+}): JSX.Element => {
 	const VAT = 5;
 	const DELIVERY_PRICE = 12;
 	const allTotalPrice = (totalAmount + (totalAmount * VAT) / 100 + DELIVERY_PRICE).toFixed(2);
@@ -45,10 +51,23 @@ export const CheckoutSidebar: React.FC<ICheckoutSidebarProps> = ({ className, to
 			{/* <span className="text-xl cursor-pointer">У вас есть промокод?</span> */}
 
 			{/* upload block */}
-			<Button loading={loading} type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
-				Перейти к оплате
-				<ArrowRightIcon className="w-5 ml-2" />
-			</Button>
+			<div className="flex flex-col gap-2">
+				<Button loading={loading} type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+					Перейти к оплате
+					<ArrowRightIcon className="w-5 ml-2" />
+				</Button>
+
+				{/* order without payment */}
+				<Button
+					loading={loading}
+					type="button"
+					onClick={onSubmitCash}
+					className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
+				>
+					Оплата при доставке
+					<ArrowRightIcon className="w-5 ml-2" />
+				</Button>
+			</div>
 		</WhiteBlock>
 	);
 };

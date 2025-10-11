@@ -14,7 +14,7 @@ import {
 
 import { PizzaSize, PizzaType } from "@/constants/pizza";
 import { getCartItemDetails } from "@/lib";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui";
 import { CartDriwerItem } from "./cart-driwer-item";
@@ -49,7 +49,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX
 						items.map((item) => (
 							<CartDriwerItem
 								key={item.id}
-								loading={loading}
+								loading={loading || redirecting}
 								id={item.id}
 								imageUrl={item.imageUrl}
 								details={getCartItemDetails(
@@ -89,21 +89,24 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX
 									<div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
 								</span>
 
-								<span className="font-bold text-lg">{totalAmount} zł</span>
+								<span className="font-bold text-lg flex items-center justify-center gap-2">
+									{loading ? <Loader2 className="w-5 h-5 animate-spin" /> : totalAmount} zł
+								</span>
 							</div>
 
-							<SheetClose asChild>
-								<Button
-									asChild
-									onClick={() => setRedirecting(true)}
-									loading={loading || redirecting}
-									className="w-full h-12 text-base"
-								>
-									<Link href="/checkout">
-										Оформить заказ <ArrowRight className="w-5 ml-2" />
-									</Link>
-								</Button>
-							</SheetClose>
+							{/* <SheetClose asChild> */}
+							<Button
+								// asChild
+								disabled={loading || redirecting}
+								onClick={() => setRedirecting(true)}
+								loading={loading || redirecting}
+								className="w-full h-12 text-base"
+							>
+								<Link href="/checkout" className="flex items-center justify-center">
+									Оформить заказ <ArrowRight className="w-5 ml-2" />
+								</Link>
+							</Button>
+							{/* </SheetClose> */}
 						</div>
 					</SheetFooter>
 				)}

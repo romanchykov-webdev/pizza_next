@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
+
 import React, { JSX } from "react";
 
+export type CSSVariables = React.CSSProperties & { ["--img"]?: string };
 interface Props {
 	imageUrl: string;
 	className?: string;
@@ -10,12 +12,12 @@ interface Props {
 export const ProductImage: React.FC<Props> = ({ imageUrl, className, size }): JSX.Element => {
 	const imgPct = size === 20 ? "60%" : size === 30 ? "70%" : "80%";
 	return (
-		<div
-			// className={cn("relative w-full aspect-square mx-auto max-w-[clamp(220px,80vw,520px)]", className)}
-			// style={{ ["--img" as any]: imgPct }} // eslint-disable-line @typescript-eslint/no-explicit-any
-			className={cn("relative aspect-square mx-auto", className)}
-			style={{ ["--img" as any]: imgPct }} // eslint-disable-line @typescript-eslint/no-explicit-any
-		>
+		// <div
+
+		// 	className={cn("relative aspect-square mx-auto", className)}
+		// 	style={{ ["--img" as any]: imgPct }} // eslint-disable-line @typescript-eslint/no-explicit-any
+		// >
+		<div className={cn("relative aspect-square mx-auto", className)} style={{ ["--img"]: imgPct } as CSSVariables}>
 			<img
 				src={imageUrl}
 				alt="Пицца"

@@ -5,8 +5,11 @@ import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
 
 import { stripe } from "@/lib/stripe";
+import { sendTelegramMessage } from "@/lib/telegram";
 import type { Stripe } from "stripe";
 import { prisma } from "../../prisma/prisma-client";
+
+import { mapPizzaTypes } from "@/constants/pizza";
 
 // const APP_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
 // const APP_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://pizza-next-neon.vercel.app";
@@ -107,7 +110,95 @@ export async function createOrder(data: CheckoutFormValues) {
 	}
 }
 
-//  функция очистки корзины
+// Новый поток: заказ без онлайн-оплаты (оплата курьеру) Telegram-уведомление
+export async function createCashOrder(data: CheckoutFormValues) {
+	try {
+		const cookieStore = await cookies();
+		const cartToken = cookieStore.get("cartToken")?.value;
+
+		if (!cartToken) throw new Error("Cart token not found");
+
+		const cart = await prisma.cart.findFirst({
+			where: { tokenId: cartToken },
+			include: {
+				items: {
+					include: {
+						productItem: { include: { product: true } },
+						ingredients: true,
+					},
+				},
+			},
+		});
+
+		if (!cart) throw new Error("Cart not found");
+		if (!cart.items.length || cart.totalAmount <= 0) throw new Error("Cart is empty");
+
+		const itemsCents = Math.round(cart.totalAmount * 100);
+		const taxCents = Math.round((itemsCents * VAT_PERCENT) / 100);
+		const deliveryCents = Math.round(DELIVERY_EUR * 100);
+		const grandCents = itemsCents + taxCents + deliveryCents;
+
+		const order = await prisma.order.create({
+			data: {
+				tokenId: cartToken,
+				totalAmount: Math.round(grandCents / 100),
+				status: OrderStatus.PENDING, // ждёт подтверждения оператором
+				items: JSON.stringify(cart.items),
+				fullName: `${data.firstname ?? ""} ${data.lastname ?? ""}`.trim(),
+				email: data.email ?? "",
+				phone: data.phone,
+				address: data.address,
+				comment: data.comment ?? "",
+				paymentId: "COD", // метка, что оплата будет курьеру
+			},
+		});
+
+		// Детализация позиций
+		const lines: string[] = [];
+		for (const it of cart.items) {
+			const qty = it.quantity ?? 1;
+			const name = it.productItem?.product?.name ?? "Товар";
+			const size = (it.pizzaSize ?? it.productItem?.size) ? ` (${it.pizzaSize ?? it.productItem?.size} см)` : "";
+
+			// тип теста: берём из item.type, если нет — из productItem.pizzaType
+			const doughType = it.type ?? it.productItem?.pizzaType;
+			const doughName = doughType ? mapPizzaTypes[doughType as keyof typeof mapPizzaTypes] : undefined;
+			const doughLine = doughName ? `, тесто: ${doughName}` : "";
+
+			const ing = (it.ingredients ?? []).map((x) => x.name).filter(Boolean);
+			const ingLine = ing.length ? `\n  + Ингредиенты: ${ing.join(", ")}` : "";
+
+			lines.push(`${qty} x ${name}${size}${doughLine}${ingLine}`);
+		}
+
+		const msg: string[] = [
+			"🛵 Новый заказ (оплата курьеру)",
+			`№${order.id}`,
+			`Сумма: €${(grandCents / 100).toFixed(2)}`,
+			"",
+			"Состав:",
+			...lines.map((l) => `• ${l}`),
+			"",
+			`Клиент: ${order.fullName}`,
+			`Телефон: ${order.phone}`,
+			`Email: ${order.email}`,
+			`Адрес: ${order.address}`,
+			`Комментарий: ${order.comment || "-"}`,
+		];
+
+		await sendTelegramMessage(msg.join("\n"));
+
+		// Очищаем корзину сразу после оформления
+		await clearCart(cartToken);
+
+		return { success: true, orderId: order.id };
+	} catch (error) {
+		console.error("[CREATE_CASH_ORDER] Server error", error);
+		return { success: false };
+	}
+}
+
+//  функция очистки корзины временная
 export async function clearCart(cartToken?: string) {
 	try {
 		// Если cartToken не передан, пробуем получить из куки

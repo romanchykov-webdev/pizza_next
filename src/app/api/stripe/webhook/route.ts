@@ -1,14 +1,44 @@
 import { stripe } from "@/lib/stripe";
+import { sendTelegramMessage } from "@/lib/telegram";
 import { OrderStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { prisma } from "../../../../../prisma/prisma-client";
 
+import { mapPizzaTypes } from "@/constants/pizza";
+
+// Тип позиции заказа
+type OrderItemIngredient = { id: number; name: string; price: number; imageUrl: string };
+type OrderItem = {
+	quantity?: number;
+	pizzaSize?: number;
+	type?: number; // тип теста
+	productItem?: {
+		size?: number;
+		pizzaType?: number;
+		product?: { name?: string };
+	};
+	ingredients?: OrderItemIngredient[];
+};
+
+// Безопасный парсер JSON без any
+function parseOrderItems(input: unknown): OrderItem[] {
+	if (typeof input === "string") {
+		try {
+			return JSON.parse(input) as OrderItem[];
+		} catch {
+			return [];
+		}
+	}
+	if (Array.isArray(input)) {
+		return input as unknown as OrderItem[];
+	}
+	return [];
+}
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Жестко закодированный секрет для отладки
-// const WEBHOOK_SECRET = "whsec_73581fc6215e3bc90a9d8b3c6604909d244169efda1eb3297aed9385cd935ce8";
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: Request) {
@@ -20,7 +50,6 @@ export async function POST(req: Request) {
 		return NextResponse.json({ error: "No signature" }, { status: 400 });
 	}
 
-	// Используем жестко закодированный секрет вместо process.env
 	const secret = WEBHOOK_SECRET;
 	console.log("[WEBHOOK] Using webhook secret:", secret.substring(0, 5) + "...");
 
@@ -57,7 +86,12 @@ export async function POST(req: Request) {
 					},
 				});
 
-				// 2) Очищаем корзину по токену
+				// 2 Достаем заказ для формирования сообшения
+				const order = await prisma.order.findUnique({
+					where: { id: orderId },
+				});
+
+				// 3) Очищаем корзину по токену
 				const cart = await prisma.cart.findFirst({
 					where: { tokenId: cartToken },
 					select: { id: true },
@@ -71,15 +105,56 @@ export async function POST(req: Request) {
 					});
 				}
 
+				// 4) Telegram-уведомление с составом заказа
+				if (order) {
+					const items: OrderItem[] = parseOrderItems(order.items);
+
+					const lines: string[] = [];
+					for (const it of items) {
+						const qty = it.quantity ?? 1;
+						const name = it.productItem?.product?.name ?? "Товар";
+						const size =
+							(it.pizzaSize ?? it.productItem?.size)
+								? ` (${it.pizzaSize ?? it.productItem?.size} см)`
+								: "";
+
+						const doughType = it.type ?? it.productItem?.pizzaType;
+						const doughName = doughType
+							? mapPizzaTypes[doughType as keyof typeof mapPizzaTypes]
+							: undefined;
+						const doughLine = doughName ? `, тесто: ${doughName}` : "";
+
+						const ing = (it.ingredients ?? []).map((x) => x.name).filter(Boolean);
+						const ingLine = ing.length ? `\n  + Ингредиенты: ${ing.join(", ")}` : "";
+
+						lines.push(`${qty} x ${name}${size}${doughLine}${ingLine}`);
+					}
+
+					const msg: string[] = [
+						"🧾 Оплачен новый заказ",
+						`№${order.id}`,
+						`Сумма: €${Number(order.totalAmount).toFixed(2)}`,
+						"",
+						"Состав:",
+						...lines.map((l) => `• ${l}`),
+						"",
+						`Клиент: ${order.fullName}`,
+						`Телефон: ${order.phone}`,
+						`Email: ${order.email}`,
+						`Адрес: ${order.address}`,
+						`Комментарий: ${order.comment || "-"}`,
+					];
+
+					await sendTelegramMessage(msg.join("\n"));
+				}
+
 				break;
 			}
 
-			// Остальной код без изменений...
+			//
 			case "checkout.session.async_payment_failed":
 			case "payment_intent.payment_failed": {
 				try {
-					// можно пометить заказ отменённым
-					// Для обоих типов событий объект может быть разным, поэтому используем узкие типы
 					const dataObject = event.data.object as
 						| Stripe.PaymentIntent
 						| Stripe.Checkout.Session
@@ -113,7 +188,7 @@ export async function POST(req: Request) {
 			}
 
 			default:
-				// для прочих событий ничего не делаем
+				//
 				console.log("[WEBHOOK] Unhandled event type:", event.type);
 				break;
 		}
