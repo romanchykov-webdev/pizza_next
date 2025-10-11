@@ -3,16 +3,16 @@ import { Title } from "@/components/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
-import { createOrder } from "@/app/actions";
+import { createCashOrder, createOrder } from "@/app/actions";
+import { CheckoutSidebar } from "@/components/shared/checkout-sidebar";
+import { CheckoutAdressForm } from "@/components/shared/checkout/checkout-adress-form";
+import { CheckoutCart } from "@/components/shared/checkout/checkout-cart";
 import { checkoutFormSchema, CheckoutFormValues } from "@/components/shared/checkout/checkout-form-schema";
+import { CheckoutPersanalInfo } from "@/components/shared/checkout/checkout-persanal-info";
 import { useCart } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { CheckoutCart } from "@/components/shared/checkout/checkout-cart";
-import { CheckoutPersanalInfo } from "@/components/shared/checkout/checkout-persanal-info";
-import { CheckoutAdressForm } from "@/components/shared/checkout/checkout-adress-form";
-import { CheckoutSidebar } from "@/components/shared/checkout-sidebar";
 
 export default function CheckoutPage() {
 	//
@@ -61,6 +61,30 @@ export default function CheckoutPage() {
 		// createOrder(data);
 	};
 
+	const onSubmitCash: SubmitHandler<CheckoutFormValues> = async (data: CheckoutFormValues) => {
+		try {
+			setSubmitting(true);
+
+			const res = await createCashOrder(data);
+
+			if (!res?.success) {
+				toast.error("Не удалось щформить заказ без оплаты. Попробуйте ещё раз.", { icon: "❌" });
+				setSubmitting(false);
+				return;
+			}
+
+			toast.success("Заказ успешно оформлен! Мы уже начинаем готовить ваш заказ!", { icon: "✅" });
+
+			window.location.href = "/success";
+		} catch (error) {
+			console.log(error);
+			toast.error("Произошла ошибка при оформлении заказа", {
+				icon: "❌",
+			});
+			setSubmitting(false);
+		}
+	};
+
 	return (
 		<div className={cn("mt-10 pb-40")}>
 			<Title text="Оформление заказа" size="xl" className="mb-8" />
@@ -78,23 +102,28 @@ export default function CheckoutPage() {
 								loading={loading}
 								removeCartItem={removeCartItem}
 								changeItemCount={changeItemCount}
-								className={`${loading && "opacity-40 pointer-events-none"}`}
+								className={`${loading || (submitting && "opacity-40 pointer-events-none")}`}
 							/>
 
 							{/*  */}
-							<CheckoutPersanalInfo className={`${loading && "opacity-40 pointer-events-none"}`} />
+							<CheckoutPersanalInfo
+								className={`${loading || (submitting && "opacity-40 pointer-events-none")}`}
+							/>
 
 							{/* */}
-							<CheckoutAdressForm className={`${loading && "opacity-40 pointer-events-none"}`} />
+							<CheckoutAdressForm
+								className={`${loading || (submitting && "opacity-40 pointer-events-none")}`}
+							/>
 						</div>
 
 						{/* right block - subblock */}
 						<div className="flex flex-col gap-10 flex-1 lg:col-span-1 sm:col-span-2 ">
 							{/*  */}
 							<CheckoutSidebar
+								onSubmitCash={form.handleSubmit(onSubmitCash)}
 								totalAmount={totalAmount}
 								loading={loading || submitting}
-								className={`${loading && "opacity-40 pointer-events-none"}`}
+								className={`${loading || (submitting && "opacity-40 pointer-events-none")}`}
 							/>
 							{/*  */}
 						</div>
