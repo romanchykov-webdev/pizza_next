@@ -73,9 +73,10 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 					className="w-full h-auto max-h-[250px] sm:max-h-[300px] md:max-h-[400px] object-contain"
 				/>
 			</div>
-
 			{/* Правая часть - нижняя часть */}
-			<div className="w-full lg:w-[490px] bg-[#FCFCFC] p-4 lg:p-7 overflow-auto ">
+			<div
+				className={`w-full lg:w-[490px] bg-[#FCFCFC] p-4 lg:p-7 overflow-auto ${loading && "opacity-40 pointer-events-none"}`}
+			>
 				<Title text={name} size="md" className="font-extrabold mb-1" />
 
 				<p className="text-gray-400" dangerouslySetInnerHTML={{ __html: textDetails }} />
