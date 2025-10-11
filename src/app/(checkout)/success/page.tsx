@@ -18,31 +18,26 @@ const SuccessContent = () => {
 	const router = useRouter();
 	const sessionId = params.get("session_id");
 	const [secondsLeft, setSecondsLeft] = useState(5);
-	const shownOnceRef = useRef(false);
 
 	useEffect(() => {
-		if (sessionId) {
-			if (!shownOnceRef.current) {
-				toast.success("✅ Оплата прошла успешно!");
-				shownOnceRef.current = true;
-			}
+		const isPaid = Boolean(sessionId);
+		const total = isPaid ? 5 : 3;
 
-			const tick = setInterval(() => {
-				setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
-			}, 1000);
+		// установить стартовое значение
+		setSecondsLeft(total);
 
-			const toHome = setTimeout(() => {
-				router.replace("/");
-			}, 5000);
+		const tick = setInterval(() => {
+			setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+		}, 1000);
 
-			return () => {
-				clearInterval(tick);
-				clearTimeout(toHome);
-			};
-		} else {
-			const toHome = setTimeout(() => router.replace("/"), 3000);
-			return () => clearTimeout(toHome);
-		}
+		const toHome = setTimeout(() => {
+			router.replace("/");
+		}, total * 1000);
+
+		return () => {
+			clearInterval(tick);
+			clearTimeout(toHome);
+		};
 	}, [sessionId, router]);
 
 	return (
