@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { Suspense, useEffect, useState } from "react";
 
 // Функция для получения значения куки
 // function getCookie(name: string): string | undefined {
@@ -20,25 +19,19 @@ const SuccessContent = () => {
 	const [secondsLeft, setSecondsLeft] = useState(5);
 
 	useEffect(() => {
-		const isPaid = Boolean(sessionId);
-		const total = isPaid ? 5 : 3;
-
-		// установить стартовое значение
-		setSecondsLeft(total);
-
 		const tick = setInterval(() => {
 			setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
 		}, 1000);
 
 		const toHome = setTimeout(() => {
 			router.replace("/");
-		}, total * 1000);
+		}, 5000);
 
 		return () => {
 			clearInterval(tick);
 			clearTimeout(toHome);
 		};
-	}, [sessionId, router]);
+	}, [router]);
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
