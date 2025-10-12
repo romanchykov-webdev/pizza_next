@@ -25,6 +25,7 @@ export { ProductCard } from "./product-card";
 export { ProductFormClient } from "./product-form-client";
 export { ProductImage } from "./product-image";
 export { ProductsGroupList } from "./products-group-list";
+export { ProfileButton } from "./profile-button";
 export { RequiredSymbol } from "./required-symbol";
 export { SearchInput } from "./search-input";
 export { CheckoutItemSkeleton } from "./skeletons/checkout-item-skeleton";

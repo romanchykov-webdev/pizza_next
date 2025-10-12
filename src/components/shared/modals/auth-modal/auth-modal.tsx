@@ -1,19 +1,22 @@
 "use client";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import React from "react";
-// import { LoginForm } from "./forms/login-form";
-// import { RegisterForm } from "./forms/register-form";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import React, { useState } from "react";
+
+import { LoginForm } from "./forms/login-form";
+import { RegisterForm } from "./forms/register-form";
+
 import { Button } from "@/components/ui/button";
-// import { signIn } from "next-auth/react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { signIn } from "next-auth/react";
 
 interface Props {
 	open: boolean;
-	onClose: VoidFunction;
+	onClose: () => void;
 }
 
 export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
-	const [type, setType] = React.useState<"login" | "register">("login");
+	const [type, setType] = useState<"login" | "register">("login");
 
 	const onSwitchType = () => {
 		setType(type === "login" ? "register" : "login");
@@ -26,13 +29,19 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 
 	return (
 		<Dialog open={open} onOpenChange={handleClose}>
-			<DialogContent className="w-[450px] bg-white p-10">
-				{/* {type === "login" ? <LoginForm onClose={handleClose} /> : <RegisterForm onClose={handleClose} />} */}
+			<DialogContent className="max-w-[450px] bg-white p-10 rounded-lg shadow-md shadow-yellow-500">
+				<VisuallyHidden>
+					<DialogTitle>{"dialog title"}</DialogTitle>
+				</VisuallyHidden>
+
+				{/* Формы */}
+				{type === "login" ? <LoginForm onClose={handleClose} /> : <RegisterForm onClose={handleClose} />}
 
 				<hr />
 
+				{/* Кнопки */}
 				<div className="flex gap-2">
-					{/* <Button
+					<Button
 						variant="secondary"
 						onClick={() =>
 							signIn("github", {
@@ -49,9 +58,9 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 							alt="Authentication image"
 						/>
 						GitHub
-					</Button> */}
+					</Button>
 
-					{/* <Button
+					<Button
 						variant="secondary"
 						onClick={() =>
 							signIn("google", {
@@ -68,7 +77,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 							alt="Authentication image"
 						/>
 						Google
-					</Button> */}
+					</Button>
 				</div>
 
 				<Button variant="outline" onClick={onSwitchType} type="button" className="h-12">

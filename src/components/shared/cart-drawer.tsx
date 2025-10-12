@@ -19,9 +19,9 @@ import Link from "next/link";
 import { Button } from "../ui";
 import { CartDriwerItem } from "./cart-driwer-item";
 
-import EmptyCartSvg from "@/assets/basket-empty.svg";
 import { useCart } from "@/hooks";
 import Image from "next/image";
+import EmptyCartSvg from "../../../public/assets/basket-empty.svg";
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => {
 	//
