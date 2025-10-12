@@ -144,3 +144,19 @@ html {
 .scrollbar::-webkit-scrollbar-thumb:hover {
 	background: #dbdadd;
 }
+
+#nprogress .bar {
+	background-color: #fe5f00;
+	background-color: #fe5f00 !important;
+}
+
+#nprogress .peg {
+	box-shadow:
+		0 0 10px #fe5f00,
+		0 0 5px #fe5f00 !important;
+}
+
+#nprogress .spinner-icon {
+	border-top-color: #fe5f00 !important;
+	border-left-color: #fe5f00 !important;
+}
