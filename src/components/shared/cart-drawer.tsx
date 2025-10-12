@@ -95,17 +95,17 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }): JSX
 							</div>
 
 							{/* <SheetClose asChild> */}
-							<Button
-								// asChild
-								disabled={loading || redirecting}
-								onClick={() => setRedirecting(true)}
-								loading={loading || redirecting}
-								className="w-full h-12 text-base"
-							>
-								<Link href="/checkout" className="flex items-center justify-center">
+							<Link href="/checkout" className="flex items-center justify-center">
+								<Button
+									// asChild
+									disabled={loading || redirecting}
+									onClick={() => setRedirecting(true)}
+									loading={loading || redirecting}
+									className="w-full h-12 text-base"
+								>
 									Оформить заказ <ArrowRight className="w-5 ml-2" />
-								</Link>
-							</Button>
+								</Button>
+							</Link>
 							{/* </SheetClose> */}
 						</div>
 					</SheetFooter>
