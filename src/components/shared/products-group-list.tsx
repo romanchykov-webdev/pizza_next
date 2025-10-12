@@ -19,12 +19,23 @@ interface Props {
 }
 
 export const ProductsGroupList: React.FC<Props> = ({ title, items, categoryId, className }) => {
+	//
+	const HEADER_OFFSET = 100; // высота sticky-зоны (TopBar + отступы)
+
 	const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
 
 	const intersectionRef = useRef<HTMLDivElement>(null);
 
+	// const intersection = useIntersection(intersectionRef as React.RefObject<HTMLElement>, {
+	// 	threshold: 0.4,
+	// });
+
 	const intersection = useIntersection(intersectionRef as React.RefObject<HTMLElement>, {
-		threshold: 0.4,
+		root: null,
+		// сдвигаем окно наблюдения вниз на высоту шапки, и “сужаем” снизу, чтобы
+		// предыдущая секция не считалась активной, когда новая почти у верха
+		rootMargin: `-${HEADER_OFFSET}px 0px -60% 0px`,
+		threshold: [0, 0.1, 0.25, 0.5],
 	});
 
 	useEffect(() => {

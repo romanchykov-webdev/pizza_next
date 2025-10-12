@@ -10,6 +10,8 @@ import type { Stripe } from "stripe";
 import { prisma } from "../../prisma/prisma-client";
 
 import { mapPizzaTypes } from "@/constants/pizza";
+import { calcCatItemTotalPrice } from "@/lib/calc-cart-item-total-price";
+import { CartItemDTO } from "../../services/dto/cart.dto";
 
 // const APP_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
 // const APP_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://pizza-next-neon.vercel.app";
@@ -60,7 +62,8 @@ export async function createOrder(data: CheckoutFormValues) {
 				tokenId: cartToken,
 				totalAmount: Math.round(grandCents / 100),
 				status: OrderStatus.PENDING,
-				items: JSON.stringify(cart.items),
+				// items: JSON.stringify(cart.items),
+				items: cart.items,
 				fullName: `${data.firstname ?? ""} ${data.lastname ?? ""}`.trim(),
 				email: data.email ?? "",
 				phone: data.phone,
@@ -143,7 +146,8 @@ export async function createCashOrder(data: CheckoutFormValues) {
 				tokenId: cartToken,
 				totalAmount: Math.round(grandCents / 100),
 				status: OrderStatus.PENDING, // ждёт подтверждения оператором
-				items: JSON.stringify(cart.items),
+				//
+				items: cart.items,
 				fullName: `${data.firstname ?? ""} ${data.lastname ?? ""}`.trim(),
 				email: data.email ?? "",
 				phone: data.phone,
@@ -168,7 +172,10 @@ export async function createCashOrder(data: CheckoutFormValues) {
 			const ing = (it.ingredients ?? []).map((x) => x.name).filter(Boolean);
 			const ingLine = ing.length ? `\n  + Ингредиенты: ${ing.join(", ")}` : "";
 
-			lines.push(`${qty} x ${name}${size}${doughLine}${ingLine}`);
+			// сумма позиции (база + ингредиенты) * количество
+			const itemSum = calcCatItemTotalPrice(it as CartItemDTO);
+
+			lines.push(`${qty} x ${name}${size}${doughLine}${ingLine} - ${itemSum} zł`);
 		}
 
 		const msg: string[] = [
