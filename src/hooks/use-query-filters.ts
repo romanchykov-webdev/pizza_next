@@ -72,6 +72,7 @@ export function useQueryFilters(filters: Filters) {
 			router[mode](`${pathname}${query}`, { scroll: false });
 			lastAppliedRef.current = query;
 		}
+		// console.log({ filters });
 
 		prevFiltersRef.current = filters;
 	}, [query, pathname, router, filters, skipFirst, pickHistoryMode]);
