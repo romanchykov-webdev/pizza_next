@@ -1,12 +1,14 @@
+"use client";
 import { Container } from "@/components/shared/container";
 import { SearchInput } from "@/components/shared/search-input";
-import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { CartButton } from "./cart-button";
+
+import { AuthModal } from "./modals";
+import { ProfileButton } from "./profile-button";
 
 interface IHeaderProps {
 	hasSearch?: boolean;
@@ -15,6 +17,8 @@ interface IHeaderProps {
 }
 
 export const Header: React.FC<IHeaderProps> = ({ className, hasSearch = true, hasCart = true }) => {
+	const [openAuthModal, setOpenAuthModal] = useState(false);
+
 	const Logo = () => (
 		<Link href="/" className="flex items-center gap-3 flex-col md:flex-row">
 			<Image src="/logo.png" alt="logo" width={40} height={40} />
@@ -25,16 +29,22 @@ export const Header: React.FC<IHeaderProps> = ({ className, hasSearch = true, ha
 		</Link>
 	);
 
-	const AuthButton = () => (
-		<Button variant="outline" className="flex items-center gap-1">
-			<User size={16} />
-			Войти
-		</Button>
-	);
+	// const AuthButton = () => (
+	// 	<Button
+	// 		onClick={() => signIn("github", { callbackUrl: "/", redirect: true })}
+	// 		variant="outline"
+	// 		className="flex items-center gap-1"
+	// 	>
+	// 		<User size={16} />
+	// 		Войти
+	// 	</Button>
+	// );
 
 	const RightSide = () => (
 		<div className="flex items-center gap-3 justify-center md:justify-end">
-			<AuthButton />
+			<AuthModal open={openAuthModal} onClose={() => setOpenAuthModal(false)} />
+
+			<ProfileButton onClockSignIn={() => setOpenAuthModal(true)} />
 			{hasCart && <CartButton />}
 		</div>
 	);
