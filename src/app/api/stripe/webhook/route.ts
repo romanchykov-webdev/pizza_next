@@ -12,10 +12,11 @@ type OrderItemIngredient = { id: number; name: string; price: number; imageUrl: 
 type OrderItem = {
 	quantity?: number;
 	pizzaSize?: number;
-	type?: number; // тип теста
+	type?: number;
 	productItem?: {
 		size?: number;
 		pizzaType?: number;
+		price?: number;
 		product?: { name?: string };
 	};
 	ingredients?: OrderItemIngredient[];
@@ -124,10 +125,18 @@ export async function POST(req: Request) {
 							: undefined;
 						const doughLine = doughName ? `, тесто: ${doughName}` : "";
 
-						const ing = (it.ingredients ?? []).map((x) => x.name).filter(Boolean);
+						const ing = (it.ingredients ?? []).map((x: OrderItemIngredient) => x.name).filter(Boolean);
 						const ingLine = ing.length ? `\n  + Ингредиенты: ${ing.join(", ")}` : "";
 
-						lines.push(`${qty} x ${name}${size}${doughLine}${ingLine}`);
+						// сумма позиции
+						const base = Number(it.productItem?.price ?? 0);
+						const ingSum = (it.ingredients ?? []).reduce(
+							(a: number, b: OrderItemIngredient) => a + b.price,
+							0,
+						);
+						const itemSum = (base + ingSum) * qty;
+
+						lines.push(`${qty} x ${name}${size}${doughLine}${ingLine} - ${itemSum} zł`);
 					}
 
 					const msg: string[] = [
