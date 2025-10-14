@@ -13,9 +13,10 @@
 interface Props {
 	onClose?: VoidFunction;
 	onClickLogin?: VoidFunction;
+	onBusyChange?: (busy: boolean) => void;
 }
 
-export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin }) => {
+export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin, onBusyChange }) => {
 	//   const form = useForm<TFormRegisterData>({
 	//     resolver: zodResolver(formRegisterSchema),
 	//     defaultValues: {

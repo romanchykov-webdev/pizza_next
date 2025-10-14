@@ -13,9 +13,10 @@ import { formLoginSchema, TFormLoginData } from "./schemas";
 
 interface Props {
 	onClose?: VoidFunction;
+	onBusyChange?: (busy: boolean) => void;
 }
 
-export const LoginForm: React.FC<Props> = ({ onClose }) => {
+export const LoginForm: React.FC<Props> = ({ onClose, onBusyChange }) => {
 	const form = useForm<TFormLoginData>({
 		resolver: zodResolver(formLoginSchema),
 		defaultValues: {
@@ -26,6 +27,7 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 
 	const onSubmit = async (data: TFormLoginData) => {
 		try {
+			onBusyChange?.(true);
 			const resp = await signIn("credentials", {
 				...data,
 				redirect: false,
@@ -43,11 +45,14 @@ export const LoginForm: React.FC<Props> = ({ onClose }) => {
 			});
 
 			onClose?.();
+			onBusyChange?.(false);
 		} catch (error) {
 			console.log("Error [LOGIN]", error);
 			toast.error("Не удалось войти", {
 				icon: "❌",
 			});
+		} finally {
+			onBusyChange?.(false);
 		}
 	};
 
