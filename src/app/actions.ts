@@ -286,3 +286,68 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 		throw err;
 	}
 }
+
+// функция регистрации пользователя
+export async function registerUser(body: Prisma.UserCreateInput) {
+	try {
+		const user = await prisma.user.findFirst({
+			where: {
+				email: body.email,
+			},
+		});
+
+		if (user) {
+			if (!user.verified) {
+				throw new Error("Почта не подтверждена");
+			}
+
+			throw new Error("Пользователь уже существует");
+		}
+
+		// const createdUser = await prisma.user.create({
+		// 	data: {
+		// 		...body,
+		// 		password: hashSync(body.password, 10),
+		// 	},
+		// });
+
+		// Создаём пользователя и сразу помечаем как верифицированного
+		const createdUser = await prisma.user.create({
+			data: {
+				fullName: body.fullName,
+				email: body.email,
+				password: hashSync(body.password, 10),
+				// verified: new Date(),
+				// provider: "credentials",
+				// providerId: undefined,
+			},
+		});
+
+		// const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+		// await prisma.verificationCode.create({
+		// 	data: {
+		// 		code,
+		// 		userId: createdUser.id,
+		// 		expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+		// 	},
+		// });
+
+		// console.log(createdUser);
+
+		// const html = `
+		// <p>Код подтверждения: <h2>${code}</h2></p>
+		// <p><a href="http://localhost:3000/api/auth/verify?code=${code}">Подтвердить регистрацию</a></p>
+		// `;
+
+		// await sendEmail(createdUser.email, "Next Pizza / Подтверждение регистрации", html);
+
+		return { success: true, userId: createdUser.id };
+	} catch (error) {
+		console.log("Error [CREATE_USER]", error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : "Unknown error",
+		};
+	}
+}

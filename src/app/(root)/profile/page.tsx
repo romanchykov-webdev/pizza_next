@@ -7,7 +7,7 @@ interface Props {
 	className?: string;
 }
 
-export default async function ProfilePage({ className }: Props) {
+export default async function ProfilePage({}: Props) {
 	//
 	const session = await getUserSession();
 

@@ -33,7 +33,8 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 
 	return (
 		<Dialog open={open} onOpenChange={handleClose}>
-			<DialogContent className="max-w-[450px] bg-white p-10 rounded-lg shadow-md shadow-yellow-500">
+			{/* <DialogContent className="max-w-[450px] bg-white p-10 rounded-lg shadow-md shadow-yellow-500"> */}
+			<DialogContent className=" max-w-[450px] max-h-[85vh] overflow-y-auto bg-white p-6 md:p-10 rounded-lg shadow-md shadow-yellow-500">
 				{busy && (
 					<div className="absolute inset-0 z-[100] bg-white/70 backdrop-blur-sm flex items-center justify-center">
 						<Loader2 className="text-yellow-500 animate-spin" size={50} />
@@ -54,47 +55,51 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 				<hr />
 
 				{/* Кнопки */}
-				<div className="flex gap-2">
-					<Button
-						variant="secondary"
-						onClick={() => {
-							setBusy(true);
-							signIn("github", {
-								callbackUrl: "/",
-								redirect: true,
-							});
-						}}
-						type="button"
-						className="gap-2 h-12 p-2 flex-1"
-					>
-						<img
-							className="w-6 h-6"
-							src="https://github.githubassets.com/favicons/favicon.svg"
-							alt="Authentication image"
-						/>
-						GitHub
-					</Button>
+				{type !== "register" && (
+					<div className="flex gap-2">
+						{/* GitHub */}
+						<Button
+							variant="secondary"
+							onClick={() => {
+								setBusy(true);
+								signIn("github", {
+									callbackUrl: "/",
+									redirect: true,
+								});
+							}}
+							type="button"
+							className="gap-2 h-12 p-2 flex-1"
+						>
+							<img
+								className="w-6 h-6"
+								src="https://github.githubassets.com/favicons/favicon.svg"
+								alt="Authentication image"
+							/>
+							GitHub
+						</Button>
 
-					<Button
-						variant="secondary"
-						onClick={() => {
-							setBusy(true);
-							signIn("google", {
-								callbackUrl: "/",
-								redirect: true,
-							});
-						}}
-						type="button"
-						className="gap-2 h-12 p-2 flex-1"
-					>
-						<img
-							className="w-6 h-6"
-							src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
-							alt="Authentication image"
-						/>
-						Google
-					</Button>
-				</div>
+						{/* Google */}
+						<Button
+							variant="secondary"
+							onClick={() => {
+								setBusy(true);
+								signIn("google", {
+									callbackUrl: "/",
+									redirect: true,
+								});
+							}}
+							type="button"
+							className="gap-2 h-12 p-2 flex-1"
+						>
+							<img
+								className="w-6 h-6"
+								src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
+								alt="Authentication image"
+							/>
+							Google
+						</Button>
+					</div>
+				)}
 
 				<Button variant="outline" onClick={onSwitchType} type="button" className="h-12">
 					{type !== "login" ? "Войти" : "Регистрация"}
