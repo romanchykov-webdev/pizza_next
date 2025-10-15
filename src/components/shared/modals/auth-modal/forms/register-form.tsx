@@ -5,7 +5,7 @@
 // import React from 'react';
 // import { FormProvider, useForm } from 'react-hook-form';
 // import { zodResolver } from '@hookform/resolvers/zod';
-// import { TFormRegisterData, formRegisterSchema } from './schemas';
+// import { TFormRegisterValues, formRegisterSchema } from './schemas';
 // import toast from 'react-hot-toast';
 // import { FormInput } from '@/components/shared/form';
 // import { registerUser } from '@/app/actions';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin, onBusyChange }) => {
-	//   const form = useForm<TFormRegisterData>({
+	//   const form = useForm<TFormRegisterValues>({
 	//     resolver: zodResolver(formRegisterSchema),
 	//     defaultValues: {
 	//       email: '',
@@ -27,7 +27,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin, onBusyCha
 	//     },
 	//   });
 
-	//   const onSubmit = async (data: TFormRegisterData) => {
+	//   const onSubmit = async (data: TFormRegisterValues) => {
 	//     try {
 	//       await registerUser({
 	//         email: data.email,

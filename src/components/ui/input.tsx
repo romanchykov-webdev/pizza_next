@@ -2,10 +2,15 @@
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+function Input({
+	className,
+	type,
+	showPassword,
+	...props
+}: React.ComponentProps<"input"> & { showPassword?: boolean }) {
 	return (
 		<input
-			type={type}
+			type={showPassword ? "text" : type}
 			data-slot="input"
 			className={cn(
 				"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground" +
@@ -14,6 +19,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
 					" file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
 				"focus-visible:border-[#FE5F00]/20 focus-visible:ring-[#FE5F00]/30 focus-visible:ring-[2px]",
 				"aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+				type === "password" ? "pl-10 " : "",
 				className,
 			)}
 			{...props}

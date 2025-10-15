@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 import { FormInput } from "@/components/shared/form/form-input";
 import { signIn } from "next-auth/react";
-import { formLoginSchema, TFormLoginData } from "./schemas";
+import { formLoginSchema, TFormLoginValues } from "./schemas";
 
 interface Props {
 	onClose?: VoidFunction;
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const LoginForm: React.FC<Props> = ({ onClose, onBusyChange }) => {
-	const form = useForm<TFormLoginData>({
+	const form = useForm<TFormLoginValues>({
 		resolver: zodResolver(formLoginSchema),
 		defaultValues: {
 			email: "",
@@ -25,7 +25,7 @@ export const LoginForm: React.FC<Props> = ({ onClose, onBusyChange }) => {
 		},
 	});
 
-	const onSubmit = async (data: TFormLoginData) => {
+	const onSubmit = async (data: TFormLoginValues) => {
 		try {
 			onBusyChange?.(true);
 			const resp = await signIn("credentials", {
@@ -34,10 +34,10 @@ export const LoginForm: React.FC<Props> = ({ onClose, onBusyChange }) => {
 			});
 
 			if (!resp?.ok) {
-				// return toast.error("Неверный E-Mail или пароль", {
-				// 	icon: "❌",
-				// });
-				throw Error();
+				// throw Error();
+				return toast.error("Неверный E-Mail или пароль", {
+					icon: "❌",
+				});
 			}
 
 			toast.success("Вы успешно вошли в аккаунт", {

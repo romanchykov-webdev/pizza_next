@@ -1,6 +1,7 @@
+import { ProfileForm } from "@/components/shared";
 import { getUserSession } from "@/lib/get-user-session";
-import { cn } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import { prisma } from "../../../../prisma/prisma-client";
 
 interface Props {
 	className?: string;
@@ -14,6 +15,12 @@ export default async function ProfilePage({ className }: Props) {
 		return redirect("/not-auth");
 	}
 
+	const user = await prisma.user.findFirst({ where: { id: Number(session?.id) } });
 	//
-	return <div className={cn("", className)}>Your profile ${session.name}</div>;
+
+	if (!user) {
+		return redirect("/");
+	}
+
+	return <ProfileForm data={user} />;
 }
