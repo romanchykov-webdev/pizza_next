@@ -18,6 +18,7 @@ export { Filters } from "./filters";
 
 export { GroupVariants } from "./group-variants";
 export { Header } from "./header";
+export { InfoBlock } from "./info-block";
 export { Ingredient } from "./ingredient";
 export { IngredientsList } from "./Ingredients-list";
 export * from "./modals";
@@ -33,3 +34,5 @@ export { SortPopup } from "./sort-popup";
 export { Title } from "./title";
 export { TopBar } from "./top-bar";
 export { WhiteBlock } from "./white-block";
+
+export { ProfileForm } from "./profile-form";

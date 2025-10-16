@@ -1,56 +1,75 @@
 "use client";
 
-// import { Button } from '@/components/ui/button';
-
-// import React from 'react';
-// import { FormProvider, useForm } from 'react-hook-form';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { TFormRegisterData, formRegisterSchema } from './schemas';
-// import toast from 'react-hot-toast';
-// import { FormInput } from '@/components/shared/form';
-// import { registerUser } from '@/app/actions';
+import { registerUser } from "@/app/actions";
+import { FormInput } from "@/components/shared/form/form-input";
+import { Button } from "@/components/ui";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { formRegisterSchema, TFormRegisterValues } from "./schemas";
 
 interface Props {
 	onClose?: VoidFunction;
-	onClickLogin?: VoidFunction;
+	// onClickLogin?: VoidFunction;
+	onBusyChange?: (busy: boolean) => void;
 }
 
-export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin }) => {
-	//   const form = useForm<TFormRegisterData>({
-	//     resolver: zodResolver(formRegisterSchema),
-	//     defaultValues: {
-	//       email: '',
-	//       fullName: '',
-	//       password: '',
-	//       confirmPassword: '',
-	//     },
-	//   });
+export const RegisterForm: React.FC<Props> = ({ onClose, onBusyChange }) => {
+	//
+	const router = useRouter();
 
-	//   const onSubmit = async (data: TFormRegisterData) => {
-	//     try {
-	//       await registerUser({
-	//         email: data.email,
-	//         fullName: data.fullName,
-	//         password: data.password,
-	//       });
+	const form = useForm<TFormRegisterValues>({
+		resolver: zodResolver(formRegisterSchema),
+		defaultValues: {
+			email: "",
+			fullName: "",
+			password: "",
+			confirmPassword: "",
+		},
+	});
 
-	//       toast.error('Регистрация успешна 📝. Подтвердите свою почту', {
-	//         icon: '✅',
-	//       });
+	const onSubmit = async (data: TFormRegisterValues) => {
+		try {
+			onBusyChange?.(true);
 
-	//       onClose?.();
-	//     } catch (error) {
-	//       return toast.error('Неверный E-Mail или пароль', {
-	//         icon: '❌',
-	//       });
-	//     }
-	//   };
+			const res = await registerUser({
+				email: data.email,
+				fullName: data.fullName,
+				password: data.password,
+			});
+
+			if (!res?.success) throw new Error(res?.error || "Registration failed");
+
+			// автологин по credentials (без редиректа)
+			const resp = await signIn("credentials", {
+				email: data.email,
+				password: data.password,
+				redirect: false,
+			});
+
+			if (!resp?.ok) throw new Error("Auto login failed");
+
+			toast.success("Регистрация прошла успешно. Вы вошли в аккаунт ✅");
+			router.refresh();
+			onClose?.();
+		} catch (error) {
+			console.log(error);
+			onBusyChange?.(false);
+			return toast.error("Неверный E-Mail или пароль", {
+				icon: "❌",
+			});
+		} finally {
+			onBusyChange?.(false);
+		}
+	};
 
 	//   console.log(form.formState);
 
 	return (
 		<>
-			{/* <FormProvider {...form}>
+			<FormProvider {...form}>
 				<form className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
 					<FormInput name="email" label="E-Mail" required />
 					<FormInput name="fullName" label="Полное имя" required />
@@ -61,7 +80,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose, onClickLogin }) => {
 						Зарегистрироваться
 					</Button>
 				</form>
-			</FormProvider> */}
+			</FormProvider>
 		</>
 	);
 };

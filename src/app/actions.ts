@@ -1,7 +1,7 @@
 "use server";
 
 import { CheckoutFormValues } from "@/components/shared/checkout/checkout-form-schema";
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
 import { stripe } from "@/lib/stripe";
@@ -11,6 +11,8 @@ import { prisma } from "../../prisma/prisma-client";
 
 import { mapPizzaTypes } from "@/constants/pizza";
 import { calcCatItemTotalPrice } from "@/lib/calc-cart-item-total-price";
+import { getUserSession } from "@/lib/get-user-session";
+import { hashSync } from "bcrypt";
 import { CartItemDTO } from "../../services/dto/cart.dto";
 
 // const APP_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
@@ -22,6 +24,7 @@ const APP_URL =
 const VAT_PERCENT = 5; // НДС, %
 const DELIVERY_EUR = 12; // Доставка,
 
+// функция создания заказа
 export async function createOrder(data: CheckoutFormValues) {
 	try {
 		const cookisStore = await cookies();
@@ -113,7 +116,7 @@ export async function createOrder(data: CheckoutFormValues) {
 	}
 }
 
-// Новый поток: заказ без онлайн-оплаты (оплата курьеру) Telegram-уведомление
+//  заказ без онлайн-оплаты (оплата курьеру) Telegram-уведомление
 export async function createCashOrder(data: CheckoutFormValues) {
 	try {
 		const cookieStore = await cookies();
@@ -246,6 +249,74 @@ export async function clearCart(cartToken?: string) {
 		return { success: true };
 	} catch (error) {
 		console.error("[CLEAR_CART] Error:", error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : "Unknown error",
+		};
+	}
+}
+
+// функция обновления информации о пользователе
+export async function updateUserInfo(body: Prisma.UserUpdateInput) {
+	try {
+		const currentUser = await getUserSession();
+
+		// проверяем авторизован ли пользователь
+		if (!currentUser) {
+			throw new Error("Пользователь не найден");
+		}
+
+		// ищем пользователя в базе данных
+		const findUser = await prisma.user.findFirst({
+			where: {
+				id: Number(currentUser.id),
+			},
+		});
+
+		// обновляем информацию о пользователе
+		await prisma.user.update({
+			where: {
+				id: Number(currentUser.id),
+			},
+			data: {
+				fullName: body.fullName,
+				email: body.email,
+				phone: (body.phone as string | null) ?? null,
+				address: (body.address as string | null) ?? null,
+				password: body.password ? hashSync(body.password as string, 10) : findUser?.password,
+			},
+		});
+	} catch (err) {
+		console.log("Error [UPDATE_USER]", err);
+		throw err;
+	}
+}
+
+// функция регистрации пользователя
+export async function registerUser(body: Prisma.UserCreateInput) {
+	try {
+		const user = await prisma.user.findFirst({
+			where: {
+				email: body.email,
+			},
+		});
+
+		if (user) {
+			throw new Error("Пользователь уже существует");
+		}
+
+		// Создаём пользователя
+		const createdUser = await prisma.user.create({
+			data: {
+				fullName: body.fullName,
+				email: body.email,
+				password: hashSync(body.password, 10),
+			},
+		});
+
+		return { success: true, userId: createdUser.id };
+	} catch (error) {
+		console.log("Error [CREATE_USER]", error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Unknown error",
