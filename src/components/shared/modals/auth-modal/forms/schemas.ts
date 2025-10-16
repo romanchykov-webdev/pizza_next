@@ -26,6 +26,8 @@ export const profileUpdateSchema = z
 	.object({
 		email: z.string().email({ message: "Введите корректную почту" }),
 		fullName: z.string().min(2, { message: "Введите имя и фамилию" }),
+		phone: z.string().optional(),
+		address: z.string().optional(),
 		password: optionalPassword,
 		confirmPassword: optionalPassword,
 	})

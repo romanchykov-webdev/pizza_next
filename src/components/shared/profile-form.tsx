@@ -12,6 +12,8 @@ import { profileUpdateSchema, TProfileUpdateValues } from "./modals/auth-modal/f
 
 import { Loader2 } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { FormAddressAutocomplete } from "./form/form-address-autocomplete";
+import { FormInputPhone } from "./form/form-input-phone";
 import { Title } from "./title";
 
 interface Props {
@@ -28,6 +30,8 @@ export const ProfileForm: React.FC<Props> = ({ className, data }): JSX.Element =
 		resolver: zodResolver(profileUpdateSchema),
 		defaultValues: {
 			fullName: data.fullName,
+			phone: data.phone || "",
+			address: data.address || "",
 			email: data.email,
 			password: "",
 			confirmPassword: "",
@@ -40,6 +44,8 @@ export const ProfileForm: React.FC<Props> = ({ className, data }): JSX.Element =
 			await updateUserInfo({
 				email: data.email,
 				fullName: data.fullName,
+				phone: data.phone || null,
+				address: data.address || null,
 				password: data.password,
 			});
 
@@ -79,6 +85,9 @@ export const ProfileForm: React.FC<Props> = ({ className, data }): JSX.Element =
 				<form className="flex flex-col gap-5 max-w-96 w-full mt-10" onSubmit={form.handleSubmit(onSubmit)}>
 					<FormInput name="email" label="E-Mail" required />
 					<FormInput name="fullName" label="Полное имя" required />
+
+					<FormInputPhone name="phone" className="text-base " placeholder="Телефон" label="Телефон" />
+					<FormAddressAutocomplete name="address" className="text-base " placeholder="Адрес" label="Адрес" />
 
 					<FormInput type="password" name="password" label="Новый пароль" />
 					<FormInput type="password" name="confirmPassword" label="Повторите пароль" />

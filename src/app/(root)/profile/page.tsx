@@ -22,5 +22,7 @@ export default async function ProfilePage({}: Props) {
 		return redirect("/");
 	}
 
+	console.log("ProfilePage user", user);
+
 	return <ProfileForm data={user} />;
 }

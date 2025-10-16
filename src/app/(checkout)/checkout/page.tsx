@@ -11,12 +11,16 @@ import { checkoutFormSchema, CheckoutFormValues } from "@/components/shared/chec
 import { CheckoutPersanalInfo } from "@/components/shared/checkout/checkout-persanal-info";
 import { useCart } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Api } from "../../../../services/api-client";
 
 export default function CheckoutPage() {
 	//
 	const [submitting, setSubmitting] = useState(false);
+
+	const { data: session } = useSession();
 
 	const { totalAmount, items, loading, removeCartItem, changeItemCount } = useCart();
 
@@ -31,6 +35,24 @@ export default function CheckoutPage() {
 			comment: "",
 		},
 	});
+
+	useEffect(() => {
+		//
+		async function fetchUserInfo() {
+			const data = await Api.auth.getMe();
+			const [firstname, lastname] = data.fullName.split(" ");
+
+			form.setValue("firstname", firstname);
+			form.setValue("lastname", lastname);
+			form.setValue("phone", data.phone || "");
+			form.setValue("address", data.address || "");
+		}
+
+		if (session) {
+			fetchUserInfo();
+		}
+		//
+	}, [session]);
 
 	const onSubmit: SubmitHandler<CheckoutFormValues> = async (data: CheckoutFormValues) => {
 		try {

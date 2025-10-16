@@ -261,16 +261,19 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 	try {
 		const currentUser = await getUserSession();
 
+		// проверяем авторизован ли пользователь
 		if (!currentUser) {
 			throw new Error("Пользователь не найден");
 		}
 
+		// ищем пользователя в базе данных
 		const findUser = await prisma.user.findFirst({
 			where: {
 				id: Number(currentUser.id),
 			},
 		});
 
+		// обновляем информацию о пользователе
 		await prisma.user.update({
 			where: {
 				id: Number(currentUser.id),
@@ -278,6 +281,8 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 			data: {
 				fullName: body.fullName,
 				email: body.email,
+				phone: (body.phone as string | null) ?? null,
+				address: (body.address as string | null) ?? null,
 				password: body.password ? hashSync(body.password as string, 10) : findUser?.password,
 			},
 		});
