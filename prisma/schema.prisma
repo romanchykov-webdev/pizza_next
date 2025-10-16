@@ -18,6 +18,9 @@ model User {
   email    String @unique
   password String
 
+  phone   String?
+  address String?
+
   role             UserRole          @default(USER)
   orders           Order[]
   cartItems        CartItem[]
@@ -87,7 +90,8 @@ model Cart {
   id Int @id @default(autoincrement())
 
   userId Int?  @unique
-  user   User? @relation(fields: [userId], references: [id])
+  // user   User? @relation(fields: [userId], references: [id])
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   tokenId String?
 
@@ -102,7 +106,8 @@ model Cart {
 model CartItem {
   id Int @id @default(autoincrement())
 
-  cart   Cart @relation(fields: [cartId], references: [id])
+  // cart   Cart @relation(fields: [cartId], references: [id])
+  cart   Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId Int
 
   productItem   ProductItem @relation(fields: [productItemId], references: [id])
@@ -110,14 +115,15 @@ model CartItem {
 
   ingredients Ingredient[]
 
-  quantity    Int @default(1)
-  
-  pizzaSize   Int?
-  type        Int?
+  quantity Int @default(1)
+
+  pizzaSize Int?
+  type      Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
+  // User      User?    @relation(fields: [userId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    Int?
 }
 
@@ -125,7 +131,8 @@ model Order {
   id Int @id @default(autoincrement())
 
   userId Int?
-  user   User? @relation(fields: [userId], references: [id])
+  // user   User? @relation(fields: [userId], references: [id])
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   tokenId String
 
