@@ -3,11 +3,7 @@ import { getUserSession } from "@/lib/get-user-session";
 import { redirect } from "next/navigation";
 import { prisma } from "../../../../prisma/prisma-client";
 
-interface Props {
-	className?: string;
-}
-
-export default async function ProfilePage({}: Props) {
+export default async function ProfilePage() {
 	//
 	const session = await getUserSession();
 
