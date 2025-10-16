@@ -57,9 +57,9 @@ export const authOptions: AuthOptions = {
 				}
 
 				// если пользователь не верифицирован, то возвращаем null
-				if (!findUser.verified) {
-					return null;
-				}
+				// if (!findUser.verified) {
+				// 	return null;
+				// }
 
 				//
 				return {
