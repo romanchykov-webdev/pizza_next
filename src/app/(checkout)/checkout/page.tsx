@@ -43,6 +43,7 @@ export default function CheckoutPage() {
 			const [firstname, lastname] = data.fullName.split(" ");
 
 			form.setValue("firstname", firstname);
+			form.setValue("email", data.email || "");
 			form.setValue("lastname", lastname);
 			form.setValue("phone", data.phone || "");
 			form.setValue("address", data.address || "");
@@ -126,6 +127,8 @@ export default function CheckoutPage() {
 								changeItemCount={changeItemCount}
 								className={`${loading || (submitting && "opacity-40 pointer-events-none")}`}
 							/>
+
+							{/* TODO: Add block recommendation */}
 
 							{/*  */}
 							<CheckoutPersanalInfo
