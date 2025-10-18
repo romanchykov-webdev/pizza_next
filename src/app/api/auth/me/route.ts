@@ -1,14 +1,18 @@
-import { getUserSession } from "@/lib/get-user-session";
+import { authOptions } from "@/constants/auth-options";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma/prisma-client";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
 	//
 	try {
 		//
-		const user = await getUserSession();
 
-		if (!user) {
+		const session = await getServerSession(authOptions);
+
+		if (!session?.user?.id) {
 			return NextResponse.json(
 				{ message: "Вы не авторизованны, заполните все необходимые поля" },
 				{ status: 401 },
@@ -16,9 +20,7 @@ export async function GET() {
 		}
 
 		const data = await prisma.user.findUnique({
-			where: {
-				id: Number(user.id),
-			},
+			where: { id: Number(session.user.id) },
 			select: {
 				fullName: true,
 				email: true,
