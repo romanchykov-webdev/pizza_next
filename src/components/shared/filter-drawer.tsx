@@ -7,7 +7,8 @@ import { Button } from "../ui";
 import { Filters } from "./filters";
 
 interface IFilterDrawerProps {
-	className?: string;
+	// className?: string;
+	children?: React.ReactNode;
 }
 
 export const FilterDrawer: React.FC<React.PropsWithChildren<IFilterDrawerProps>> = ({
