@@ -1,7 +1,6 @@
 "use client";
 import { Categories } from "@/components/shared/categories";
 import { Container } from "@/components/shared/container";
-import { SortPopup } from "@/components/shared/sort-popup";
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
 import React, { JSX } from "react";
@@ -21,9 +20,7 @@ export const TopBar: React.FC<ITopBarProps> = ({ categories, className }): JSX.E
 		>
 			<Container className="flex items-center justify-between ">
 				<Categories items={categories} />
-				<div className="flex items-center">
-					<SortPopup />
-				</div>
+				<div className="flex items-center">{/* <SortPopup  /> */}</div>
 			</Container>
 		</div>
 	);
