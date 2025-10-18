@@ -5,11 +5,12 @@ import {
 	ProductsGroupList,
 	SkeletonFollbackFilters,
 	SkeletonFollbackTopBar,
+	Stories,
 	Title,
 	TopBar,
 } from "@/components/shared";
 import { Suspense } from "react";
-// import { prisma } from "../../../prisma/prisma-client";
+
 import { Skeleton } from "@/components/ui";
 import { findPizzas } from "@/lib";
 import { GetSearchParams } from "@/lib/find-pizza";
@@ -33,7 +34,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
 
 	const categories = await findPizzas(sp);
 
-	// console.log({ categories });
+	// console.log(JSON.stringify(categories, null, 2));
 	//
 	return (
 		<>
@@ -48,6 +49,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
 			<Suspense fallback={<SkeletonFollbackTopBar count={6} />}>
 				<TopBar categories={categories.filter((c) => c.products.length > 0)} />
 			</Suspense>
+
+			<Stories />
 
 			<Container className="mt-10 pb-16">
 				<div className="flex gap-[80px]">

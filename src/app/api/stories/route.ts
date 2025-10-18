@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { prisma } from "../../../../prisma/prisma-client";
 
-// export async function GET() {
-//   // Реализация GET запроса
-//   return NextResponse.json({});
-// }
+export async function GET() {
+	const stories = await prisma.story.findMany({
+		include: {
+			items: true,
+		},
+	});
 
-export async function POST(_req: NextRequest) {
-	// Временная заглушка - возвращаем пустой ответ
-	return NextResponse.json({ success: true });
+	return NextResponse.json(stories);
 }

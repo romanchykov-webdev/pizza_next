@@ -40,3 +40,4 @@ export { TopBar } from "./top-bar";
 export { WhiteBlock } from "./white-block";
 
 export { ProfileForm } from "./profile-form";
+export { Stories } from "./stories";

@@ -329,7 +329,7 @@ async function up() {
 			{
 				storyId: 1,
 				sourceUrl: "https://cdn.inappstory.ru/file/sy/vl/c7/uyqzmdojadcbw7o0a35ojxlcul.webp?k=IgAAAAAAAAAE",
-			},
+			},			
 		],
 	});
 }

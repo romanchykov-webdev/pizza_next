@@ -46,6 +46,7 @@
 		"react-hook-form": "^7.64.0",
 		"react-hot-toast": "^2.6.0",
 		"react-imask": "^7.6.1",
+		"react-insta-stories": "^2.8.0",
 		"react-use": "^17.6.0",
 		"stripe": "^19.1.0",
 		"tailwind-merge": "^3.3.1",
