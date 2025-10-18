@@ -29,7 +29,11 @@ export { ProductsGroupList } from "./products-group-list";
 export { ProfileButton } from "./profile-button";
 export { RequiredSymbol } from "./required-symbol";
 export { SearchInput } from "./search-input";
+
 export { CheckoutItemSkeleton } from "./skeletons/checkout-item-skeleton";
+export { SkeletonFollbackFilters } from "./skeletons/skelrton-follback-filters";
+export { SkeletonFollbackTopBar } from "./skeletons/skelrton-follback-top-bar";
+
 export { SortPopup } from "./sort-popup";
 export { Title } from "./title";
 export { TopBar } from "./top-bar";
