@@ -65,12 +65,10 @@ export const ProfileForm: React.FC<Props> = ({ className, data }): JSX.Element =
 	};
 
 	//
-	const onClickSignOut = () => {
+	const onClickSignOut = async () => {
 		setIsUpdating(true);
-		signOut({
-			callbackUrl: "/",
-		});
-		setIsUpdating(false);
+		await new Promise((r) => setTimeout(r, 1000));
+		await signOut({ callbackUrl: "/", redirect: true });
 	};
 	//
 	return (
